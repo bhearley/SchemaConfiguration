@@ -354,33 +354,33 @@ else:
 
             # Initialize list of columns
             if "col_names" not in st.session_state:
-                st.session_state["col_names"] = []
+                st.session_state["col_names"] = {}
             else:
-                for j in range(len(st.session_state["col_names"] )):
-                    eval(st.session_state["col_names"][j]).empty()
-                st.session_state["col_names"] = []
+                var_list = list(st.session_state["col_names"].keys())
+                for j in range(len(var_list)):
+                    st.session_state["col_names"][var_list[j]].empty()
+                st.session_state["col_names"] = {}
             
             tab_cols = st.columns(2)
+            D = st.session_state["col_names"]
             for i in range(len(GrantaCols)):
                 col_vals.append('')
                 new_vals.append('')
 
                 with tab_cols[0]:
-                    f'var{i}' = st.empty()
-                    st.session_state["col_names"].append(f'var{i}')
+                    D["var1_" + str(i)] = st.empty()
                     if i == 0:
-                        col_vals[i] = f'var{i}'.text_input('Database Attribute',value = GrantaCols[i], key = f'tab_a_{i}')
+                        col_vals[i] = D["var1_" + str(i)] .text_input('Database Attribute',value = GrantaCols[i], key = f'tab_a_{i}')
                     else:
-                        col_vals[i] = f'var{i}'.text_input('Database Attribute',value = GrantaCols[i], key = f'tab_a_{i}', label_visibility="collapsed")
+                        col_vals[i] = D["var1_" + str(i)] .text_input('Database Attribute',value = GrantaCols[i], key = f'tab_a_{i}', label_visibility="collapsed")
                 with tab_cols[1]:
-                    f'var2{i}' = st.empty()
-                    st.session_state["col_names"].append(f'var2{i}')
+                    D["var2_" + str(i)]= st.empty()
                     if i == 0:
-                        new_vals[i] = f'var2{i}'.selectbox('Py MI Lab Attribute',JSON_atts,index = None, key = f'tab_b_{i}')
+                        new_vals[i] = D["var2_" + str(i)].selectbox('Py MI Lab Attribute',JSON_atts,index = None, key = f'tab_b_{i}')
                         #JSON_atts.index(PyCols[i])
                     else:
-                        new_vals[i] = eval('colb_' + str(i)).selectbox('Database Attribute',JSON_atts, index = None, key = f'tab_b_{i}', label_visibility="collapsed")
-
+                        new_vals[i] = D["var2_" + str(i)].selectbox('Database Attribute',JSON_atts, index = None, key = f'tab_b_{i}', label_visibility="collapsed")
+            t.session_state["col_names"] = D
 
     update_tab()
 
