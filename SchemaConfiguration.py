@@ -386,6 +386,8 @@ else:
                 st.session_state["ct"] = st.session_state["ct"]+1
                 st.session_state['change_opt'] = False
 
+                st.write(st.session_state['change_opt'])
+
     update_tab()
 
 
