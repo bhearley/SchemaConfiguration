@@ -309,12 +309,21 @@ else:
             if Analysis[Analysis_cat[j]][Analysis_att[k]]['Type'] != 'dict':
                 att_name = Analysis_cat[j] + ' - ' + Analysis_att[k]
                 JSON_atts.append(att_name)
-
+    def reset():
+        var_list = list(st.session_state["col_names"].keys())
+        for j in range(len(var_list)):
+            st.session_state["col_names"][var_list[j]].empty()
+            st.write('delete')
+        st.session_state["col_names"] = {}
+        time.sleep(30)
 
     def update_tab():
         with st.expander('Tabular Attributes', expanded = st.session_state['tab_exp']):
             # Get List of Schema Attributes
             atts = list(Atts['Tabular'].keys())
+
+            if "col_names" not in st.session_state:
+                st.session_state["col_names"] = {}
 
             # Get the max number of columns
             if "max_col" not in st.session_state:
@@ -325,8 +334,7 @@ else:
                 st.session_state["max_col"] = max_col
         
             # Create a Select Box for the different tabular attributes
-            #if "tab_att_opt" not in st.session_state:
-            tab_att_opt = st.selectbox('Select the tabular attribute',atts, key='tab_att_opt')
+            tab_att_opt = st.selectbox('Select the tabular attribute',atts, on_change = reset(), key='tab_att_opt')
 
             # Initialize the table
             if "tab_init" not in st.session_state:
@@ -352,15 +360,7 @@ else:
 
             time.sleep(0.500)
 
-            # Initialize list of columns
-            if "col_names" not in st.session_state:
-                st.session_state["col_names"] = {}
-            else:
-                var_list = list(st.session_state["col_names"].keys())
-                for j in range(len(var_list)):
-                    st.session_state["col_names"][var_list[j]].empty()
-                    st.write('delete')
-                st.session_state["col_names"] = {}
+            
             
             tab_cols = st.columns(2)
             D = st.session_state["col_names"]
