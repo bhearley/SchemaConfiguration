@@ -363,6 +363,7 @@ else:
             st.write(st.session_state['prev_opt'] )
             if st.session_state['prev_opt'] != st.session_state['tab_att_opt']:
                 st.session_state["ct"] = st.session_state["ct"]+1
+                st.write('update')
                 
             tab_cols = st.columns(2)
             D = st.session_state["col_names"]
