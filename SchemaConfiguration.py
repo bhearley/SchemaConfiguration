@@ -328,13 +328,6 @@ else:
             #if "tab_att_opt" not in st.session_state:
             tab_att_opt = st.selectbox('Select the tabular attribute',atts, key='tab_att_opt')
 
-            def reset():
-                for i in range(st.session_state['max_col']):
-                    if f'tab_b_{i}' in st.session_state:
-                        st.session_state[f'tab_b_{i}'] = ''
-
-            st.button('Reset', on_click=reset)
-
             # Initialize the table
             if "tab_init" not in st.session_state:
                 st.session_state["tab_init"] = True
@@ -377,6 +370,13 @@ else:
                         #JSON_atts.index(PyCols[i])
                     else:
                         new_vals[i] = st.selectbox('Database Attribute',JSON_atts,key = f'tab_b_{i}', label_visibility="collapsed")
+
+            def reset():
+                for i in range(st.session_state['max_col']):
+                    if f'tab_b_{i}' in st.session_state:
+                        st.session_state[f'tab_b_{i}'] = ''
+
+            st.button('Reset', on_click=reset)
 
     update_tab()
 
