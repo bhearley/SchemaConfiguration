@@ -310,8 +310,10 @@ else:
                 att_name = Analysis_cat[j] + ' - ' + Analysis_att[k]
                 JSON_atts.append(att_name)
     def reset():
-        st.session_state['change_opt'] = True
-        st.write('flag')
+        if 'flag1' in st.session_state:
+            st.session_state['change_opt'] = True
+            st.write('flag')
+        st.session_state['flag1'] = True
 
 
     def update_tab():
