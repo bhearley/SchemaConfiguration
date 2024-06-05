@@ -175,15 +175,15 @@ else:
         Config['Single Value'] = {}
         single_atts = list(Atts['Single Value'].keys())
         for i in range(len(single_atts)):
-            Config['Single Value'][single_atts[i]] = None
+            Config['Single Value'][single_atts[i]] = ''
 
         # -- Functional Attributes
         Config['Functional'] = {}
         func_atts = list(Atts['Functional'].keys())
         for i in range(len(func_atts)):
             Config['Functional'][func_atts[i]] = {}
-            Config['Functional'][func_atts[i]]['X'] = None
-            Config['Functional'][func_atts[i]]['Y'] = None
+            Config['Functional'][func_atts[i]]['X'] = ''
+            Config['Functional'][func_atts[i]]['Y'] = ''
 
         # -- Tabular Attributes
         Config['Tabular'] = {}
@@ -197,6 +197,7 @@ else:
             Config['Tabular'][tab_atts[i]]['PyCols'] = temp
 
         st.session_state['Config'] = Config
+        
 
 
     with st.expander('Single Value Attributes'):
@@ -238,6 +239,12 @@ else:
                     st.selectbox('Py MI Lab Attribute', JSON_atts, key=f'single_val_b_{i}')
                 else:
                     st.selectbox('Py MI Lab Attribute', JSON_atts, key=f'single_val_b_{i}',label_visibility = "collapsed")
+
+        # Save the data
+        Config = st.session_state['Config']
+        for i in range(len(atts)):
+            Config['Single Value'][atts[i]] = st.session_state[f'single_val_b_{i}']
+        st.session_state['Config'] = Config
 
     with st.expander('Functional Attributes'):
         # Get List of Schema Attributes
@@ -284,6 +291,13 @@ else:
                     st.selectbox('Y - Py MI Lab Attribute', JSON_atts,key=f'func_c_{i}')
                 else:
                     st.selectbox('Y - Py MI Lab Attribute', JSON_atts, key=f'func_c_{i}',label_visibility = "collapsed")
+
+        # Save the data
+        Config = st.session_state['Config']
+        for i in range(len(atts)):
+            Config['Functional'][atts[i]]['X'] = st.session_state[f'func_b_{i}']
+            Config['Functional'][atts[i]]['Y'] = st.session_state[f'func_c_{i}']
+        st.session_state['Config'] = Config
 
 
     if 'tab_exp' not in st.session_state:
@@ -350,12 +364,9 @@ else:
             col_vals = []
             new_vals = []
 
-            st.write(st.session_state['tab_att_opt'])
-            st.write(st.session_state['prev_opt'] )
             if st.session_state['prev_opt'] != st.session_state['tab_att_opt']:
                 st.session_state["ct"] = st.session_state["ct"]+1
-                st.write('update')
-                
+
             tab_cols = st.columns(2)
             D = st.session_state["col_names"]
 
