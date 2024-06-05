@@ -361,30 +361,36 @@ else:
 
             
             if st.session_state['prev_opt'] != tab_att_opt:
-                st.session_state['prev_opt'] = tab_att_opt
-                tab_cols = st.columns(2)
-                D = st.session_state["col_names"]
-                for i in range(len(GrantaCols)):
-                    col_vals.append('')
-                    new_vals.append('')
-    
-                    with tab_cols[0]:
-                        D["var1_" + str(i)] = st.empty()
-                        if i == 0:
-                            col_vals[i] = D["var1_" + str(i)].text_input('Database Attribute',value = GrantaCols[i], key = f'tab_a_{st.session_state["ct"]}')
-                        else:
-                            col_vals[i] = D["var1_" + str(i)].text_input('Database Attribute',value = GrantaCols[i], key = f'tab_a_{st.session_state["ct"]}', label_visibility="collapsed")
-                    with tab_cols[1]:
-                        D["var2_" + str(i)]= st.empty()
-                        if i == 0:
-                            new_vals[i] = D["var2_" + str(i)].selectbox('Py MI Lab Attribute',JSON_atts,index = None, key = f'tab_b_{st.session_state["ct"]}')
-                            #JSON_atts.index(PyCols[i])
-                        else:
-                            new_vals[i] = D["var2_" + str(i)].selectbox('Database Attribute',JSON_atts, index = None, key = f'tab_b_{st.session_state["ct"]}', label_visibility="collapsed")
-                    st.session_state["ct"] = st.session_state["ct"]+1
+                st.session_state["ct"] = st.session_state["ct"]+1
+                
+            tab_cols = st.columns(2)
+            D = st.session_state["col_names"]
+
+            for i in range(len(GrantaCols)):
+                col_vals.append('')
+                new_vals.append('')
+
+                with tab_cols[0]:
+                    D["var1_" + str(i)] = st.empty()
+                    if i == 0:
+                        col_vals[i] = D["var1_" + str(i)].text_input('Database Attribute',value = GrantaCols[i], key = f'tab_a_{st.session_state["ct"]+i}')
+                    else:
+                        col_vals[i] = D["var1_" + str(i)].text_input('Database Attribute',value = GrantaCols[i], key = f'tab_a_{st.session_state["ct"]+i}', label_visibility="collapsed")
+                with tab_cols[1]:
+                    D["var2_" + str(i)]= st.empty()
+                    if i == 0:
+                        new_vals[i] = D["var2_" + str(i)].selectbox('Py MI Lab Attribute',JSON_atts,index = None, key = f'tab_b_{st.session_state["ct"]+i}')
+                        #JSON_atts.index(PyCols[i])
+                    else:
+                        new_vals[i] = D["var2_" + str(i)].selectbox('Database Attribute',JSON_atts, index = None, key = f'tab_b_{st.session_state["ct"]+i}', label_visibility="collapsed")
+
                 st.session_state["col_names"] = D            
                 st.session_state['change_opt'] = False
                 st.write(st.session_state["ct"])
+
+            if st.session_state['prev_opt'] != tab_att_opt:
+                    st.session_state['prev_opt'] = tab_att_opt
+                    st.session_state["ct"] = st.session_state["ct"]+i
 
     update_tab()
 
