@@ -309,13 +309,13 @@ else:
             if Analysis[Analysis_cat[j]][Analysis_att[k]]['Type'] != 'dict':
                 att_name = Analysis_cat[j] + ' - ' + Analysis_att[k]
                 JSON_atts.append(att_name)
-    def reset():
-        if "col_names" in st.session_state:
-            var_list = list(st.session_state["col_names"].keys())
-            for j in range(len(var_list)):
-                st.session_state["col_names"][var_list[j]].empty()
-                st.write('delete')
-            st.session_state["col_names"] = {}
+    # def reset():
+    #     if "col_names" in st.session_state:
+    #         var_list = list(st.session_state["col_names"].keys())
+    #         for j in range(len(var_list)):
+    #             st.session_state["col_names"][var_list[j]].empty()
+    #             st.write('delete')
+    #         st.session_state["col_names"] = {}
 
 
     def update_tab():
@@ -357,13 +357,13 @@ else:
             new_vals = []
 
             # Delete Old Values if the exist
-            for i in range(st.session_state['max_col']):
-                if f'tab_a_{i}' in st.session_state:
-                    del st.session_state[f'tab_a_{i}']
-                if f'tab_b_{i}' in st.session_state:
-                    del st.session_state[f'tab_b_{i}']
+            # for i in range(st.session_state['max_col']):
+            #     if f'tab_a_{i}' in st.session_state:
+            #         del st.session_state[f'tab_a_{i}']
+            #     if f'tab_b_{i}' in st.session_state:
+            #         del st.session_state[f'tab_b_{i}']
 
-            time.sleep(0.500)
+            # time.sleep(0.500)
 
             
             
@@ -376,9 +376,9 @@ else:
                 with tab_cols[0]:
                     D["var1_" + str(i)] = st.empty()
                     if i == 0:
-                        col_vals[i] = D["var1_" + str(i)] .text_input('Database Attribute',value = GrantaCols[i], key = f'tab_a_{st.session_state["ct"]}')
+                        col_vals[i] = D["var1_" + str(i)].text_input('Database Attribute',value = GrantaCols[i], key = f'tab_a_{st.session_state["ct"]}')
                     else:
-                        col_vals[i] = D["var1_" + str(i)] .text_input('Database Attribute',value = GrantaCols[i], key = f'tab_a_{st.session_state["ct"]}', label_visibility="collapsed")
+                        col_vals[i] = D["var1_" + str(i)].text_input('Database Attribute',value = GrantaCols[i], key = f'tab_a_{st.session_state["ct"]}', label_visibility="collapsed")
                 with tab_cols[1]:
                     D["var2_" + str(i)]= st.empty()
                     if i == 0:
