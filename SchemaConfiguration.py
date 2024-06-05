@@ -374,7 +374,7 @@ else:
 
                     # Get index
                     if PyCols[i] == None:
-                        idx = None:
+                        idx = None
                     else:
                         idx = Json_atts.index(PyCols[i])
                     
