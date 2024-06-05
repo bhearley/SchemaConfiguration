@@ -366,17 +366,17 @@ else:
                 new_vals.append('')
 
                 with tab_cols[0]:
-                    eval('cola_' + str(i)) = st.empty()
-                    st.session_state["col_names"].append('cola_' + str(i))
+                    f'var{i}' = st.empty()
+                    st.session_state["col_names"].append(f'var{i}')
                     if i == 0:
-                        col_vals[i] = eval('cola_' + str(i)).text_input('Database Attribute',value = GrantaCols[i], key = f'tab_a_{i}')
+                        col_vals[i] = f'var{i}'.text_input('Database Attribute',value = GrantaCols[i], key = f'tab_a_{i}')
                     else:
-                        col_vals[i] = eval('cola_' + str(i)).text_input('Database Attribute',value = GrantaCols[i], key = f'tab_a_{i}', label_visibility="collapsed")
+                        col_vals[i] = f'var{i}'.text_input('Database Attribute',value = GrantaCols[i], key = f'tab_a_{i}', label_visibility="collapsed")
                 with tab_cols[1]:
-                    eval('colb_' + str(i)) = st.empty()
-                    st.session_state["col_names"].append('colb_' + str(i))
+                    f'var2{i}' = st.empty()
+                    st.session_state["col_names"].append(f'var2{i}')
                     if i == 0:
-                        new_vals[i] = eval('colb_' + str(i)).selectbox('Py MI Lab Attribute',JSON_atts,index = None, key = f'tab_b_{i}')
+                        new_vals[i] = f'var2{i}'.selectbox('Py MI Lab Attribute',JSON_atts,index = None, key = f'tab_b_{i}')
                         #JSON_atts.index(PyCols[i])
                     else:
                         new_vals[i] = eval('colb_' + str(i)).selectbox('Database Attribute',JSON_atts, index = None, key = f'tab_b_{i}', label_visibility="collapsed")
