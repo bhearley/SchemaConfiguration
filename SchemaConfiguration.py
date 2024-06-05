@@ -311,6 +311,7 @@ else:
                 JSON_atts.append(att_name)
     def reset():
         st.session_state['change_opt'] = True
+        st.write('flag')
 
 
     def update_tab():
