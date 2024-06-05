@@ -372,10 +372,10 @@ else:
                         col_vals[i] = st.text_input('Database Attribute',value = GrantaCols[i], key = f'tab_a_{i}', label_visibility="collapsed")
                 with tab_cols[1]:
                     if i == 0:
-                        new_vals[i] = st.selectbox('Database Attribute',JSON_atts, index =0,key = f'tab_b_{i}')
+                        new_vals[i] = st.selectbox('Py MI Lab Attribute',JSON_atts,key = f'tab_b_{i}')
                         #JSON_atts.index(PyCols[i])
                     else:
-                        new_vals[i] = st.selectbox('Database Attribute',JSON_atts, index =0,key = f'tab_b_{i}', label_visibility="collapsed")
+                        new_vals[i] = st.selectbox('Database Attribute',JSON_atts,key = f'tab_b_{i}', label_visibility="collapsed")
 
     update_tab()
 
