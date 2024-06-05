@@ -329,9 +329,9 @@ else:
             tab_att_opt = st.selectbox('Select the tabular attribute',atts, key='tab_att_opt')
 
             if st.button('Clear Fields'):
-                for i in range(st.session_state['max_col']):
-                    st.write('reset')
+                for i in range(st.session_state['max_col']):      
                     if f'tab_b_{i}' in st.session_state:
+                        st.write('reset')
                         st.session_state[f'tab_b_{i}'] = ''
 
             # Initialize the table
