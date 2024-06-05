@@ -413,7 +413,7 @@ else:
     # Create the config file
     json_string = json.dumps(st.session_state['Config'])
 
-    st.json(json_string, expanded=True)
+    #st.json(json_string, expanded=True)
     
     st.download_button(
         label="Download Configuration File",
