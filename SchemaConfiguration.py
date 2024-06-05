@@ -359,6 +359,7 @@ else:
                 var_list = list(st.session_state["col_names"].keys())
                 for j in range(len(var_list)):
                     st.session_state["col_names"][var_list[j]].empty()
+                    st.write('delete')
                 st.session_state["col_names"] = {}
             
             tab_cols = st.columns(2)
