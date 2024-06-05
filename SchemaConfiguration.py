@@ -329,7 +329,7 @@ else:
             # Create a Select Box for the different tabular attributes
             tab_att_opt = st.selectbox('Select the tabular attribute',atts, on_change = reset(), key='tab_att_opt')
 
-            if 'repv_opt. not in st.session_state:
+            if 'prev_opt' not in st.session_state:
                 st.session_state['prev_opt'] = tab_att_opt
 
             if "col_names" not in st.session_state:
