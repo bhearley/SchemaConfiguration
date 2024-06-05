@@ -376,7 +376,7 @@ else:
                     if PyCols[i] == None:
                         idx = None
                     else:
-                        idx = Json_atts.index(PyCols[i])
+                        idx = JSON_atts.index(PyCols[i])
                     
                     if i == 0:
                         new_vals[i] = D["var2_" + str(i)].selectbox('Py MI Lab Attribute',JSON_atts,index = idx, key = f'tab_b_{st.session_state["ct"]+i}')
