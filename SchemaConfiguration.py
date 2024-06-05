@@ -408,13 +408,19 @@ else:
 
             st.session_state['Config'] = Config
                 
-
-
-
-
     update_tab()
 
+    # Create the config file
+    json_string = json.dumps(st.session_state['Config'])
 
+    st.json(json_string, expanded=True)
+    
+    st.download_button(
+        label="Download Configuration File",
+        file_name=st.session_state["schema_name"] + ".json",
+        mime="application/json",
+        data=json_string,
+    )
     
             
 
