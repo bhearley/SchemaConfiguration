@@ -380,7 +380,7 @@ else:
                         #JSON_atts.index(PyCols[i])
                     else:
                         new_vals[i] = D["var2_" + str(i)].selectbox('Database Attribute',JSON_atts, index = None, key = f'tab_b_{i}', label_visibility="collapsed")
-            t.session_state["col_names"] = D
+            st.session_state["col_names"] = D
 
     update_tab()
 
