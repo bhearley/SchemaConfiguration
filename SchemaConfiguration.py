@@ -373,6 +373,7 @@ else:
                 with tab_cols[1]:
                     if i == 0:
                         new_vals[i] = st.selectbox('Py MI Lab Attribute',JSON_atts,key = f'tab_b_{i}')
+                        st.write('create')
                         #JSON_atts.index(PyCols[i])
                     else:
                         new_vals[i] = st.selectbox('Database Attribute',JSON_atts,key = f'tab_b_{i}', label_visibility="collapsed")
