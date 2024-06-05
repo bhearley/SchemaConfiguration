@@ -360,7 +360,7 @@ else:
             # time.sleep(0.500)
 
             
-            if st.session_state['prev_opt'] != tab_att_opt:
+            if st.session_state['prev_opt'] != st.session_state['tab_att_opt']:
                 st.session_state["ct"] = st.session_state["ct"]+1
                 
             tab_cols = st.columns(2)
@@ -388,9 +388,9 @@ else:
                 st.session_state['change_opt'] = False
                 st.write(st.session_state["ct"])
 
-            if st.session_state['prev_opt'] != tab_att_opt:
-                    st.session_state['prev_opt'] = tab_att_opt
-                    st.session_state["ct"] = st.session_state["ct"]+i
+            if st.session_state['prev_opt'] != st.session_state['tab_att_opt']:
+                st.session_state['prev_opt'] = st.session_state['tab_att_opt']
+                st.session_state["ct"] = st.session_state["ct"]+i
 
     update_tab()
 
