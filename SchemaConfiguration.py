@@ -323,6 +323,8 @@ else:
             # Get List of Schema Attributes
             atts = list(Atts['Tabular'].keys())
 
+            if "ct" not in st.session_state:
+                st.session_state["ct"] = 0
             
 
             # Get the max number of columns
@@ -332,8 +334,7 @@ else:
                     if len(Atts['Tabular'][atts[i]]['Columns']) > max_col:
                         max_col = len(Atts['Tabular'][atts[i]]['Columns']) 
                 st.session_state["max_col"] = max_col
-                st.session_state["ct"] = 0
-        
+                
             # Create a Select Box for the different tabular attributes
             tab_att_opt = st.selectbox('Select the tabular attribute',atts, key='tab_att_opt')
 
