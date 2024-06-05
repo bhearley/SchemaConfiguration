@@ -309,12 +309,6 @@ else:
             if Analysis[Analysis_cat[j]][Analysis_att[k]]['Type'] != 'dict':
                 att_name = Analysis_cat[j] + ' - ' + Analysis_att[k]
                 JSON_atts.append(att_name)
-    def reset():
-        if 'flag1' in st.session_state:
-            st.session_state['change_opt'] = True
-            st.write('flag')
-        st.session_state['flag1'] = True
-
 
     def update_tab():
         with st.expander('Tabular Attributes', expanded = st.session_state['tab_exp']):
@@ -323,8 +317,6 @@ else:
 
             if "ct" not in st.session_state:
                 st.session_state["ct"] = 0
-                st.session_state["change_opt"] = False
-            
 
             # Get the max number of columns
             if "max_col" not in st.session_state:
@@ -336,6 +328,9 @@ else:
                 
             # Create a Select Box for the different tabular attributes
             tab_att_opt = st.selectbox('Select the tabular attribute',atts, on_change = reset(), key='tab_att_opt')
+
+            if 'repv_opt. not in st.session_state:
+                st.session_state['prev_opt'] = tab_att_opt
 
             if "col_names" not in st.session_state:
                 st.session_state["col_names"] = {}
@@ -365,7 +360,7 @@ else:
             # time.sleep(0.500)
 
             
-            if st.session_state['change_opt'] == True:
+            if st.session_state['prev_opt'] != tab_att_opt:
                 tab_cols = st.columns(2)
                 D = st.session_state["col_names"]
                 for i in range(len(GrantaCols)):
