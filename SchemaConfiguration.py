@@ -350,15 +350,6 @@ else:
             col_vals = []
             new_vals = []
 
-            # Delete Old Values if the exist
-            # for i in range(st.session_state['max_col']):
-            #     if f'tab_a_{i}' in st.session_state:
-            #         del st.session_state[f'tab_a_{i}']
-            #     if f'tab_b_{i}' in st.session_state:
-            #         del st.session_state[f'tab_b_{i}']
-
-            # time.sleep(0.500)
-
             st.write(st.session_state['tab_att_opt'])
             st.write(st.session_state['prev_opt'] )
             if st.session_state['prev_opt'] != st.session_state['tab_att_opt']:
@@ -380,19 +371,33 @@ else:
                         col_vals[i] = D["var1_" + str(i)].text_input('Database Attribute',value = GrantaCols[i], key = f'tab_a_{st.session_state["ct"]+i}', label_visibility="collapsed")
                 with tab_cols[1]:
                     D["var2_" + str(i)]= st.empty()
-                    if i == 0:
-                        new_vals[i] = D["var2_" + str(i)].selectbox('Py MI Lab Attribute',JSON_atts,index = None, key = f'tab_b_{st.session_state["ct"]+i}')
-                        #JSON_atts.index(PyCols[i])
+
+                    # Get index
+                    if PyCols[i] == None:
+                        idx = None:
                     else:
-                        new_vals[i] = D["var2_" + str(i)].selectbox('Database Attribute',JSON_atts, index = None, key = f'tab_b_{st.session_state["ct"]+i}', label_visibility="collapsed")
+                        idx = Json_atts.index(PyCols[i])
+                    
+                    if i == 0:
+                        new_vals[i] = D["var2_" + str(i)].selectbox('Py MI Lab Attribute',JSON_atts,index = idx, key = f'tab_b_{st.session_state["ct"]+i}')
+                    else:
+                        new_vals[i] = D["var2_" + str(i)].selectbox('Database Attribute',JSON_atts, index = idx, key = f'tab_b_{st.session_state["ct"]+i}', label_visibility="collapsed")
 
                 st.session_state["col_names"] = D            
                 st.session_state['change_opt'] = False
-            st.write(st.session_state["ct"])
 
             if st.session_state['prev_opt'] != st.session_state['tab_att_opt']:
                 st.session_state['prev_opt'] = st.session_state['tab_att_opt']
-                #st.session_state["ct"] = st.session_state["ct"]+i
+
+
+            # Store the Data
+            Config['Tabular'][att_name]['PyCols'] = []
+            for j in range(len(new_vals)):
+                Config['Tabular'][att_name]['PyCols'].append(new_vals[j])
+
+            st.session_state['Config'] = Config
+                
+
 
 
 
