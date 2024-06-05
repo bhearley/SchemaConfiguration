@@ -327,7 +327,7 @@ else:
                 st.session_state["max_col"] = max_col
                 
             # Create a Select Box for the different tabular attributes
-            tab_att_opt = st.selectbox('Select the tabular attribute',atts, on_change = reset(), key='tab_att_opt')
+            tab_att_opt = st.selectbox('Select the tabular attribute',atts, key='tab_att_opt')
 
             if 'prev_opt' not in st.session_state:
                 st.session_state['prev_opt'] = tab_att_opt
