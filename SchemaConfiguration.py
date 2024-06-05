@@ -310,20 +310,20 @@ else:
                 att_name = Analysis_cat[j] + ' - ' + Analysis_att[k]
                 JSON_atts.append(att_name)
     def reset():
-        var_list = list(st.session_state["col_names"].keys())
-        for j in range(len(var_list)):
-            st.session_state["col_names"][var_list[j]].empty()
-            st.write('delete')
-        st.session_state["col_names"] = {}
-        time.sleep(30)
+        if "col_names" in st.session_state:
+            var_list = list(st.session_state["col_names"].keys())
+            for j in range(len(var_list)):
+                st.session_state["col_names"][var_list[j]].empty()
+                st.write('delete')
+            st.session_state["col_names"] = {}
+            time.sleep(30)
 
     def update_tab():
         with st.expander('Tabular Attributes', expanded = st.session_state['tab_exp']):
             # Get List of Schema Attributes
             atts = list(Atts['Tabular'].keys())
 
-            if "col_names" not in st.session_state:
-                st.session_state["col_names"] = {}
+            
 
             # Get the max number of columns
             if "max_col" not in st.session_state:
@@ -335,6 +335,9 @@ else:
         
             # Create a Select Box for the different tabular attributes
             tab_att_opt = st.selectbox('Select the tabular attribute',atts, on_change = reset(), key='tab_att_opt')
+
+            if "col_names" not in st.session_state:
+                st.session_state["col_names"] = {}
 
             # Initialize the table
             if "tab_init" not in st.session_state:
