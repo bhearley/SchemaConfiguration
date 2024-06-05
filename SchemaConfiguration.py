@@ -17,9 +17,8 @@ import streamlit as st
 from openpyxl import load_workbook
 
 # Set Home Directory
-#data_path = "/mount/src/labinfrastructure/"  # -- Deployment
-raw_template = r"C:\Users\bhearley\Box\bhearley\Projects\Granta\Py-MILab\PyMILab_v2.0\Raw_Template.json"
-analysis_template = r"C:\Users\bhearley\Box\bhearley\Projects\Granta\Py-MILab\PyMILab_v2.0\Analysis_Template.json"
+raw_template = "/mount/src/schemaconfiguration/Raw_Template.json"
+analysis_template = "/mount/src/schemaconfiguration/Analysis_Template.json"
 
 # Initialize Flags
 excel_flag = 0
