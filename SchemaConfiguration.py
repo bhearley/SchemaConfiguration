@@ -330,6 +330,7 @@ else:
 
             if st.button('Clear Fields'):
                 for i in range(st.session_state['max_col']):
+                    st.write('reset')
                     if f'tab_b_{i}' in st.session_state:
                         st.session_state[f'tab_b_{i}'] = ''
 
