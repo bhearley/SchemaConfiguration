@@ -361,6 +361,7 @@ else:
 
             
             if st.session_state['prev_opt'] != tab_att_opt:
+                st.session_state['prev_opt'] = tab_att_opt
                 tab_cols = st.columns(2)
                 D = st.session_state["col_names"]
                 for i in range(len(GrantaCols)):
