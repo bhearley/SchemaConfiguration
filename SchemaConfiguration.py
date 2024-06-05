@@ -388,8 +388,6 @@ else:
                 st.session_state["col_names"] = D            
                 st.session_state['change_opt'] = False
             st.write(st.session_state["ct"])
-            st.write(st.session_state['tab_att_opt'])
-            st.write(st.session_state['prev_opt'] )
 
             if st.session_state['prev_opt'] != st.session_state['tab_att_opt']:
                 st.session_state['prev_opt'] = st.session_state['tab_att_opt']
