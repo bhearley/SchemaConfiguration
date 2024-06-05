@@ -309,13 +309,8 @@ else:
             if Analysis[Analysis_cat[j]][Analysis_att[k]]['Type'] != 'dict':
                 att_name = Analysis_cat[j] + ' - ' + Analysis_att[k]
                 JSON_atts.append(att_name)
-    # def reset():
-    #     if "col_names" in st.session_state:
-    #         var_list = list(st.session_state["col_names"].keys())
-    #         for j in range(len(var_list)):
-    #             st.session_state["col_names"][var_list[j]].empty()
-    #             st.write('delete')
-    #         st.session_state["col_names"] = {}
+    def reset():
+        st.session_state['change_opt'] = True
 
 
     def update_tab():
@@ -325,6 +320,7 @@ else:
 
             if "ct" not in st.session_state:
                 st.session_state["ct"] = 0
+                st.session_state["change_opt"] = False
             
 
             # Get the max number of columns
@@ -336,7 +332,7 @@ else:
                 st.session_state["max_col"] = max_col
                 
             # Create a Select Box for the different tabular attributes
-            tab_att_opt = st.selectbox('Select the tabular attribute',atts, key='tab_att_opt')
+            tab_att_opt = st.selectbox('Select the tabular attribute',atts, on_change = reset(), key='tab_att_opt')
 
             if "col_names" not in st.session_state:
                 st.session_state["col_names"] = {}
@@ -366,28 +362,29 @@ else:
             # time.sleep(0.500)
 
             
-            
-            tab_cols = st.columns(2)
-            D = st.session_state["col_names"]
-            for i in range(len(GrantaCols)):
-                col_vals.append('')
-                new_vals.append('')
-
-                with tab_cols[0]:
-                    D["var1_" + str(i)] = st.empty()
-                    if i == 0:
-                        col_vals[i] = D["var1_" + str(i)].text_input('Database Attribute',value = GrantaCols[i], key = f'tab_a_{st.session_state["ct"]}')
-                    else:
-                        col_vals[i] = D["var1_" + str(i)].text_input('Database Attribute',value = GrantaCols[i], key = f'tab_a_{st.session_state["ct"]}', label_visibility="collapsed")
-                with tab_cols[1]:
-                    D["var2_" + str(i)]= st.empty()
-                    if i == 0:
-                        new_vals[i] = D["var2_" + str(i)].selectbox('Py MI Lab Attribute',JSON_atts,index = None, key = f'tab_b_{st.session_state["ct"]}')
-                        #JSON_atts.index(PyCols[i])
-                    else:
-                        new_vals[i] = D["var2_" + str(i)].selectbox('Database Attribute',JSON_atts, index = None, key = f'tab_b_{st.session_state["ct"]}', label_visibility="collapsed")
-            st.session_state["col_names"] = D
-            st.session_state["ct"] = st.session_state["ct"]+1
+            if st.session_state['change_opt'] == True:
+                tab_cols = st.columns(2)
+                D = st.session_state["col_names"]
+                for i in range(len(GrantaCols)):
+                    col_vals.append('')
+                    new_vals.append('')
+    
+                    with tab_cols[0]:
+                        D["var1_" + str(i)] = st.empty()
+                        if i == 0:
+                            col_vals[i] = D["var1_" + str(i)].text_input('Database Attribute',value = GrantaCols[i], key = f'tab_a_{st.session_state["ct"]}')
+                        else:
+                            col_vals[i] = D["var1_" + str(i)].text_input('Database Attribute',value = GrantaCols[i], key = f'tab_a_{st.session_state["ct"]}', label_visibility="collapsed")
+                    with tab_cols[1]:
+                        D["var2_" + str(i)]= st.empty()
+                        if i == 0:
+                            new_vals[i] = D["var2_" + str(i)].selectbox('Py MI Lab Attribute',JSON_atts,index = None, key = f'tab_b_{st.session_state["ct"]}')
+                            #JSON_atts.index(PyCols[i])
+                        else:
+                            new_vals[i] = D["var2_" + str(i)].selectbox('Database Attribute',JSON_atts, index = None, key = f'tab_b_{st.session_state["ct"]}', label_visibility="collapsed")
+                st.session_state["col_names"] = D
+                st.session_state["ct"] = st.session_state["ct"]+1
+                st.session_state['change_opt'] = False
 
     update_tab()
 
