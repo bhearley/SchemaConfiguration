@@ -37,9 +37,6 @@ st.title("PyMILab Schema Configuration Manager")
 # SCHEMA SELECTION
 # Generate a new configuation file or load one from a previous save
 
-# Create a text entry for the name
-name = st.text_input('Name the Configuration',value = "New Schema Configuration", key = "schema_name")
-
 if "excel_flag" not in st.session_state:
     # Initialize Session State
     
@@ -442,7 +439,7 @@ else:
     
     st.download_button(
         label="Download Configuration File",
-        file_name=st.session_state["schema_name"] + ".json",
+        file_name="New_Schema_Config.json",
         mime="application/json",
         data=json_string,
     )
