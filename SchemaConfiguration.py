@@ -59,7 +59,7 @@ if "excel_flag" not in st.session_state:
 
 else:
     if 'file' in st.session_state:
-        if 'xlsx' in st.session_state['file'].name"
+        if 'xlsx' in st.session_state['file'].name:
             st.session_state['excel_flag'] = 1
     
     
