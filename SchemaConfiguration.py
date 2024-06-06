@@ -58,7 +58,7 @@ if "excel_flag" not in st.session_state:
                             accept_multiple_files = False, key = "file")
 
 else:
-    if 'file' in st.session_state:
+    if st.session_state['file'] != None:
         if 'xlsx' in st.session_state['file'].name:
             st.session_state['excel_flag'] = 1
     
