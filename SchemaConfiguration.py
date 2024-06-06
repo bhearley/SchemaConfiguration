@@ -174,6 +174,7 @@ else:
         # Get the Atts List
         st.session_state['Atts'] = Prev_Config['Atts']
 
+        st.write(st.session_state['Config'])
         
 
     # Load the Raw and Analysis Template File
