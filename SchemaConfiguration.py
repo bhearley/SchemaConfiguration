@@ -70,6 +70,8 @@ if "excel_flag" not in st.session_state:
 
 else:
     if st.session_state['excel_flag'] == 1:
+        st.session_state['excel_flag'] == 2
+        
         # Read The Excel File and Get MI Attributes
         wb = load_workbook(st.session_state['file'], data_only=True, read_only=True)
         # Get List of Sheets
