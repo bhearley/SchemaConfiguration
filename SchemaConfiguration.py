@@ -155,6 +155,10 @@ else:
             # Set the Excel Flag
             st.session_state['Atts'] = Atts
 
+        elif 'json' in st.session_state['file'].name:
+            Prev_Config = json.load(st.session_state['file'])
+            st.write(Prev_Config)
+
         # Load the Raw and Analysis Template File
         f = open(raw_template)
         Raw = json.load(f)
