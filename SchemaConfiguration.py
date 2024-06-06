@@ -42,8 +42,8 @@ name = st.text_input('Name the Configuration',value = "New Schema Configuration"
 
 if "excel_flag" not in st.session_state:
     # Initialize Session State
-    st.session_state['excel_flag'] = 0
-    st.session_state['json_flag'] = 0
+    
+    
 
     # Create Instructions
     instruct1 = st.empty()
@@ -57,377 +57,382 @@ if "excel_flag" not in st.session_state:
     filename = file.file_uploader('Upload a Excel Schema or Configuration File', type = ['xlsx','json'],
                             accept_multiple_files = False, key = "file")
 
-else:
-    if st.session_state['file'] != None:
+    if filename != None:
         if 'xlsx' in st.session_state['file'].name:
             st.session_state['excel_flag'] = 1
-    
-    
-            # Read The Excel File and Get MI Attributes
-            wb = load_workbook(st.session_state['file'], data_only=True, read_only=True)
-            # Get List of Sheets
-            Sheets = []
-            i = 0
-            while wb.sheetnames[i] != 'Data':
-                Sheets.append(wb.sheetnames[i])
-                i=i+1
-            Sheets.append('Data')
-    
-            # Get List of Attributes
-            Atts = {'Single Value':{},
-                    'Functional':{},
-                    'Tabular':{}}
-    
-            # Read the tabular and functional data attributes
-            for i in range(len(Sheets)-1):
-                # Open the sheet
-                ws = wb[Sheets[i]]
-    
-                # Get the attribute name
-                att_name = ws.cell(row=4,column=2).value
-    
-                # Determine if the attribute is functional or tabular
-                # -- 0 = functional
-                # -- 1 = tabular
-                att_flag = 0
-                if ws.cell(row=7,column = 3).value == 'Row Number':
-                    att_flag = 1
-                    row_num = 7
-    
-                # Get Functional Data Information
-                if att_flag == 0:
-                    # Get X and Y Names
-                    x_name = ws.cell(row = 8,column=3).value
-                    y_name = ws.cell(row = 8,column=4).value
-    
-                    # Check for Units
-                    x_att = x_name
-                    x_unit = None
-                    if x_name[-1] == ')':
-                        idx = x_name.index("(")
-                        x_att = x_name[:idx-1]
-                        x_unit = x_name[idx+1:len(x_name)-1]
-    
-                    y_att = y_name
-                    y_unit = None
-                    if y_name[-1] == ')':
-                        idx = y_name.index("(")
-                        y_att = y_name[:idx-1]
-                        y_unit = y_name[idx+1:len(y_name)-1]
-    
-                    Atts['Functional'][att_name] = {'Variables':[x_att, y_att],
-                                                    'Units':[x_unit, y_unit]}
-    
-                # Get Tabular Data Information
-                else:
-                    # Get the editable column names (don't include row number)
-                    cols = []
-                    units = []
-                    col_num = 4
-                    while ws.cell(row=row_num,column=col_num).value != None:
-                        # Get the color of cell
-                        clr = ws.cell(row=row_num,column=col_num).fill.start_color.index 
-                        if clr == 'FFFFFF00':
-                            # Check for associated units
-                            row_name = ws.cell(row=row_num,column=col_num).value
-                            row_att = row_name
-                            row_unit = None
-                            if row_name[-1] == ')':
-                                idx = row_name.index("(")
-                                row_att = row_name[:idx-1]
-                                row_unit = row_name[idx+1:len(row_name)-1]
-                                temp=1
-    
-                            cols.append(row_att)
-                            units.append(row_unit)
-                        col_num = col_num+1
-                    Atts['Tabular'][att_name] = {'Columns':cols,
-                                                    'Units':units}
-    
-            # Get The Single Value Attributes
-            ws = wb['Data']
-    
-            for k in range(10, ws.max_row+1):
-                # Check the color for a header
-                if ws.cell(row=k,column=3).fill.start_color.index == 'FFFFFFFF' and ws.cell(row=k,column=3).value != None:
-                    Atts['Single Value'][ws.cell(row=k,column=3).value]= ws.cell(row=k,column=4).value
-    
-            # Set the Excel Flag
-            st.session_state['Atts'] = Atts
-
-        elif 'json' in st.session_state['file'].name:
-            Prev_Config = json.load(st.session_state['file'])
-            st.write(Prev_Config)
-
-        # Load the Raw and Analysis Template File
-        f = open(raw_template)
-        Raw = json.load(f)
-        st.session_state['Raw'] = Raw
-
-        f = open(analysis_template)
-        Analysis = json.load(f)
-        st.session_state['Analysis'] = Analysis
-
-        # Load Atts
-        Atts = st.session_state['Atts']
-        Raw = st.session_state['Raw']
-        Analysis = st.session_state['Analysis']
-    
-        # Initialize the Configuration JSON
-        if 'Config' not in st.session_state:
-            Config = {}
-    
-            # -- Single Attributes
-            Config['Single Value'] = {}
-            single_atts = list(Atts['Single Value'].keys())
-            for i in range(len(single_atts)):
-                Config['Single Value'][single_atts[i]] = ''
-    
-            # -- Functional Attributes
-            Config['Functional'] = {}
-            func_atts = list(Atts['Functional'].keys())
-            for i in range(len(func_atts)):
-                Config['Functional'][func_atts[i]] = {}
-                Config['Functional'][func_atts[i]]['X'] = ''
-                Config['Functional'][func_atts[i]]['Y'] = ''
-    
-            # -- Tabular Attributes
-            Config['Tabular'] = {}
-            tab_atts = list(Atts['Tabular'].keys())
-            for i in range(len(tab_atts)):
-                Config['Tabular'][tab_atts[i]] = {}
-                Config['Tabular'][tab_atts[i]]['GrantaCols'] = Atts['Tabular'][tab_atts[i]]['Columns']
-                temp = []
-                for j in range(len(Atts['Tabular'][tab_atts[i]]['Columns'])):
-                    temp.append('')
-                Config['Tabular'][tab_atts[i]]['PyCols'] = temp
-    
-            st.session_state['Config'] = Config
-            
-    
-    
-        with st.expander('Single Value Attributes'):
-            # Get List of Schema Attributes
-            atts = list(Atts['Single Value'].keys())
-    
-             # Get List of all JSON Attributes
-            JSON_atts = ['']
-            # -- Raw Data
-            Raw_cat = list(Raw.keys())
-            for j in range(len(Raw_cat)):
-                Raw_att = list(Raw[Raw_cat[j]].keys())
-                for k in range(len(Raw_att)):
-                    if Raw[Raw_cat[j]][Raw_att[k]]['Type'] == 'point'or Raw[Raw_cat[j]][Raw_att[k]]['Type'] == 'string':
-                        att_name = Raw_cat[j] + ' - ' + Raw_att[k]
-                        JSON_atts.append(att_name)
-    
-            # -- Analysis Data
-            Analysis_cat = list(Analysis.keys())
-            for j in range(len(Analysis_cat)):
-                Analysis_att = list(Analysis[Analysis_cat[j]].keys())
-                for k in range(len(Analysis_att)):
-                    if Analysis[Analysis_cat[j]][Analysis_att[k]]['Type'] == 'point'or Analysis[Analysis_cat[j]][Analysis_att[k]]['Type'] == 'string':
-                        att_name = Analysis_cat[j] + ' - ' + Analysis_att[k]
-                        JSON_atts.append(att_name)
-    
-            # Create the table
-            single_grid = st.empty()
-            grid = single_grid.columns(2)
-    
-            for i in range(len(atts)):
-                with grid[0]:
-                    if i == 0:
-                        st.text_input('Database Attribute',value = atts[i], key = f'single_val_a_{i}')
-                    else:
-                        st.text_input('Database Attribute',value = atts[i], key = f'single_val_a_{i}',label_visibility = "collapsed")
-                with grid[1]:
-                    if i == 0:
-                        st.selectbox('Py MI Lab Attribute', JSON_atts, key=f'single_val_b_{i}')
-                    else:
-                        st.selectbox('Py MI Lab Attribute', JSON_atts, key=f'single_val_b_{i}',label_visibility = "collapsed")
-    
-            # Save the data
-            Config = st.session_state['Config']
-            for i in range(len(atts)):
-                Config['Single Value'][atts[i]] = st.session_state[f'single_val_b_{i}']
-            st.session_state['Config'] = Config
-    
-        with st.expander('Functional Attributes'):
-            # Get List of Schema Attributes
-            atts = list(Atts['Functional'].keys())
-    
-            # Get List of all JSON Attributes
-            JSON_atts = ['']
-            # -- Raw Data
-            Raw_cat = list(Raw.keys())
-            for j in range(len(Raw_cat)):
-                Raw_att = list(Raw[Raw_cat[j]].keys())
-                for k in range(len(Raw_att)):
-                    if Raw[Raw_cat[j]][Raw_att[k]]['Type'] == 'point array':
-                        att_name = Raw_cat[j] + ' - ' + Raw_att[k]
-                        JSON_atts.append(att_name)
-    
-             # -- Analysis Data
-            Analysis_cat = list(Analysis.keys())
-            for j in range(len(Analysis_cat)):
-                Analysis_att = list(Analysis[Analysis_cat[j]].keys())
-                for k in range(len(Analysis_att)):
-                    if Analysis[Analysis_cat[j]][Analysis_att[k]]['Type'] == 'point array':
-                        att_name = Analysis_cat[j] + ' - ' + Analysis_att[k]
-                        JSON_atts.append(att_name)
-    
-    
-            # Create the table
-            single_grid = st.empty()
-            grid = single_grid.columns(3)
-    
-            for i in range(len(atts)):
-                with grid[0]:
-                    if i == 0:
-                        st.text_input('Database Attribute',value = atts[i], key = f'func_a_{i}')
-                    else:
-                        st.text_input('Database Attribute',value = atts[i], key = f'func_a_{i}',label_visibility = "collapsed")
-                with grid[1]:
-                    if i == 0:
-                        st.selectbox('X - Py MI Lab Attribute', JSON_atts,key=f'func_b_{i}')
-                    else:
-                        st.selectbox('X - Py MI Lab Attribute', JSON_atts, key=f'func_b_{i}',label_visibility = "collapsed")
-                with grid[2]:
-                    if i == 0:
-                        st.selectbox('Y - Py MI Lab Attribute', JSON_atts,key=f'func_c_{i}')
-                    else:
-                        st.selectbox('Y - Py MI Lab Attribute', JSON_atts, key=f'func_c_{i}',label_visibility = "collapsed")
-    
-            # Save the data
-            Config = st.session_state['Config']
-            for i in range(len(atts)):
-                Config['Functional'][atts[i]]['X'] = st.session_state[f'func_b_{i}']
-                Config['Functional'][atts[i]]['Y'] = st.session_state[f'func_c_{i}']
-            st.session_state['Config'] = Config
-    
-    
-        if 'tab_exp' not in st.session_state:
-                st.session_state['tab_exp'] = False
+            st.session_state['json_flag'] = 0
         else:
-            st.session_state['tab_exp'] = True
-    
+            st.session_state['excel_flag'] = 0
+            st.session_state['json_flag'] = 1
+        
+
+else:
+    if st.session_state['excel_flag'] == 1:
+        # Read The Excel File and Get MI Attributes
+        wb = load_workbook(st.session_state['file'], data_only=True, read_only=True)
+        # Get List of Sheets
+        Sheets = []
+        i = 0
+        while wb.sheetnames[i] != 'Data':
+            Sheets.append(wb.sheetnames[i])
+            i=i+1
+        Sheets.append('Data')
+
+        # Get List of Attributes
+        Atts = {'Single Value':{},
+                'Functional':{},
+                'Tabular':{}}
+
+        # Read the tabular and functional data attributes
+        for i in range(len(Sheets)-1):
+            # Open the sheet
+            ws = wb[Sheets[i]]
+
+            # Get the attribute name
+            att_name = ws.cell(row=4,column=2).value
+
+            # Determine if the attribute is functional or tabular
+            # -- 0 = functional
+            # -- 1 = tabular
+            att_flag = 0
+            if ws.cell(row=7,column = 3).value == 'Row Number':
+                att_flag = 1
+                row_num = 7
+
+            # Get Functional Data Information
+            if att_flag == 0:
+                # Get X and Y Names
+                x_name = ws.cell(row = 8,column=3).value
+                y_name = ws.cell(row = 8,column=4).value
+
+                # Check for Units
+                x_att = x_name
+                x_unit = None
+                if x_name[-1] == ')':
+                    idx = x_name.index("(")
+                    x_att = x_name[:idx-1]
+                    x_unit = x_name[idx+1:len(x_name)-1]
+
+                y_att = y_name
+                y_unit = None
+                if y_name[-1] == ')':
+                    idx = y_name.index("(")
+                    y_att = y_name[:idx-1]
+                    y_unit = y_name[idx+1:len(y_name)-1]
+
+                Atts['Functional'][att_name] = {'Variables':[x_att, y_att],
+                                                'Units':[x_unit, y_unit]}
+
+            # Get Tabular Data Information
+            else:
+                # Get the editable column names (don't include row number)
+                cols = []
+                units = []
+                col_num = 4
+                while ws.cell(row=row_num,column=col_num).value != None:
+                    # Get the color of cell
+                    clr = ws.cell(row=row_num,column=col_num).fill.start_color.index 
+                    if clr == 'FFFFFF00':
+                        # Check for associated units
+                        row_name = ws.cell(row=row_num,column=col_num).value
+                        row_att = row_name
+                        row_unit = None
+                        if row_name[-1] == ')':
+                            idx = row_name.index("(")
+                            row_att = row_name[:idx-1]
+                            row_unit = row_name[idx+1:len(row_name)-1]
+                            temp=1
+
+                        cols.append(row_att)
+                        units.append(row_unit)
+                    col_num = col_num+1
+                Atts['Tabular'][att_name] = {'Columns':cols,
+                                                'Units':units}
+
+        # Get The Single Value Attributes
+        ws = wb['Data']
+
+        for k in range(10, ws.max_row+1):
+            # Check the color for a header
+            if ws.cell(row=k,column=3).fill.start_color.index == 'FFFFFFFF' and ws.cell(row=k,column=3).value != None:
+                Atts['Single Value'][ws.cell(row=k,column=3).value]= ws.cell(row=k,column=4).value
+
+        # Set the Excel Flag
+        st.session_state['Atts'] = Atts
+
+    elif 'json' in st.session_state['file'].name:
+        Prev_Config = json.load(st.session_state['file'])
+        st.write(Prev_Config)
+
+    # Load the Raw and Analysis Template File
+    f = open(raw_template)
+    Raw = json.load(f)
+    st.session_state['Raw'] = Raw
+
+    f = open(analysis_template)
+    Analysis = json.load(f)
+    st.session_state['Analysis'] = Analysis
+
+    # Load Atts
+    Atts = st.session_state['Atts']
+    Raw = st.session_state['Raw']
+    Analysis = st.session_state['Analysis']
+
+    # Initialize the Configuration JSON
+    if 'Config' not in st.session_state:
+        Config = {}
+
+        # -- Single Attributes
+        Config['Single Value'] = {}
+        single_atts = list(Atts['Single Value'].keys())
+        for i in range(len(single_atts)):
+            Config['Single Value'][single_atts[i]] = ''
+
+        # -- Functional Attributes
+        Config['Functional'] = {}
+        func_atts = list(Atts['Functional'].keys())
+        for i in range(len(func_atts)):
+            Config['Functional'][func_atts[i]] = {}
+            Config['Functional'][func_atts[i]]['X'] = ''
+            Config['Functional'][func_atts[i]]['Y'] = ''
+
+        # -- Tabular Attributes
+        Config['Tabular'] = {}
+        tab_atts = list(Atts['Tabular'].keys())
+        for i in range(len(tab_atts)):
+            Config['Tabular'][tab_atts[i]] = {}
+            Config['Tabular'][tab_atts[i]]['GrantaCols'] = Atts['Tabular'][tab_atts[i]]['Columns']
+            temp = []
+            for j in range(len(Atts['Tabular'][tab_atts[i]]['Columns'])):
+                temp.append('')
+            Config['Tabular'][tab_atts[i]]['PyCols'] = temp
+
+        st.session_state['Config'] = Config
+        
+
+
+    with st.expander('Single Value Attributes'):
+        # Get List of Schema Attributes
+        atts = list(Atts['Single Value'].keys())
+
+         # Get List of all JSON Attributes
         JSON_atts = ['']
         # -- Raw Data
         Raw_cat = list(Raw.keys())
         for j in range(len(Raw_cat)):
             Raw_att = list(Raw[Raw_cat[j]].keys())
             for k in range(len(Raw_att)):
-                if Raw[Raw_cat[j]][Raw_att[k]]['Type'] != 'dict':
+                if Raw[Raw_cat[j]][Raw_att[k]]['Type'] == 'point'or Raw[Raw_cat[j]][Raw_att[k]]['Type'] == 'string':
                     att_name = Raw_cat[j] + ' - ' + Raw_att[k]
                     JSON_atts.append(att_name)
-    
+
         # -- Analysis Data
         Analysis_cat = list(Analysis.keys())
         for j in range(len(Analysis_cat)):
             Analysis_att = list(Analysis[Analysis_cat[j]].keys())
             for k in range(len(Analysis_att)):
-                if Analysis[Analysis_cat[j]][Analysis_att[k]]['Type'] != 'dict':
+                if Analysis[Analysis_cat[j]][Analysis_att[k]]['Type'] == 'point'or Analysis[Analysis_cat[j]][Analysis_att[k]]['Type'] == 'string':
                     att_name = Analysis_cat[j] + ' - ' + Analysis_att[k]
                     JSON_atts.append(att_name)
-    
-        def update_tab():
-            with st.expander('Tabular Attributes', expanded = st.session_state['tab_exp']):
-                # Get List of Schema Attributes
-                atts = list(Atts['Tabular'].keys())
-    
-                if "ct" not in st.session_state:
-                    st.session_state["ct"] = 0
-    
-                # Get the max number of columns
-                if "max_col" not in st.session_state:
-                    max_col = 0
-                    for i in range(len(atts)):
-                        if len(Atts['Tabular'][atts[i]]['Columns']) > max_col:
-                            max_col = len(Atts['Tabular'][atts[i]]['Columns']) 
-                    st.session_state["max_col"] = max_col
-                    
-                # Create a Select Box for the different tabular attributes
-                tab_att_opt = st.selectbox('Select the tabular attribute',atts, key='tab_att_opt')
-    
-                if 'prev_opt' not in st.session_state:
-                    st.session_state['prev_opt'] = tab_att_opt
-    
-                if "col_names" not in st.session_state:
-                    st.session_state["col_names"] = {}
-    
-                # Initialize the table
-                if "tab_init" not in st.session_state:
-                    st.session_state["tab_init"] = True
-    
-                # Get the attribute
-                att_name = st.session_state["tab_att_opt"]
-    
-                # Get the Current Data
-                Config = st.session_state['Config']
-                GrantaCols = Config['Tabular'][att_name]['GrantaCols']
-                PyCols = Config['Tabular'][att_name]['PyCols']
+
+        # Create the table
+        single_grid = st.empty()
+        grid = single_grid.columns(2)
+
+        for i in range(len(atts)):
+            with grid[0]:
+                if i == 0:
+                    st.text_input('Database Attribute',value = atts[i], key = f'single_val_a_{i}')
+                else:
+                    st.text_input('Database Attribute',value = atts[i], key = f'single_val_a_{i}',label_visibility = "collapsed")
+            with grid[1]:
+                if i == 0:
+                    st.selectbox('Py MI Lab Attribute', JSON_atts, key=f'single_val_b_{i}')
+                else:
+                    st.selectbox('Py MI Lab Attribute', JSON_atts, key=f'single_val_b_{i}',label_visibility = "collapsed")
+
+        # Save the data
+        Config = st.session_state['Config']
+        for i in range(len(atts)):
+            Config['Single Value'][atts[i]] = st.session_state[f'single_val_b_{i}']
+        st.session_state['Config'] = Config
+
+    with st.expander('Functional Attributes'):
+        # Get List of Schema Attributes
+        atts = list(Atts['Functional'].keys())
+
+        # Get List of all JSON Attributes
+        JSON_atts = ['']
+        # -- Raw Data
+        Raw_cat = list(Raw.keys())
+        for j in range(len(Raw_cat)):
+            Raw_att = list(Raw[Raw_cat[j]].keys())
+            for k in range(len(Raw_att)):
+                if Raw[Raw_cat[j]][Raw_att[k]]['Type'] == 'point array':
+                    att_name = Raw_cat[j] + ' - ' + Raw_att[k]
+                    JSON_atts.append(att_name)
+
+         # -- Analysis Data
+        Analysis_cat = list(Analysis.keys())
+        for j in range(len(Analysis_cat)):
+            Analysis_att = list(Analysis[Analysis_cat[j]].keys())
+            for k in range(len(Analysis_att)):
+                if Analysis[Analysis_cat[j]][Analysis_att[k]]['Type'] == 'point array':
+                    att_name = Analysis_cat[j] + ' - ' + Analysis_att[k]
+                    JSON_atts.append(att_name)
+
+
+        # Create the table
+        single_grid = st.empty()
+        grid = single_grid.columns(3)
+
+        for i in range(len(atts)):
+            with grid[0]:
+                if i == 0:
+                    st.text_input('Database Attribute',value = atts[i], key = f'func_a_{i}')
+                else:
+                    st.text_input('Database Attribute',value = atts[i], key = f'func_a_{i}',label_visibility = "collapsed")
+            with grid[1]:
+                if i == 0:
+                    st.selectbox('X - Py MI Lab Attribute', JSON_atts,key=f'func_b_{i}')
+                else:
+                    st.selectbox('X - Py MI Lab Attribute', JSON_atts, key=f'func_b_{i}',label_visibility = "collapsed")
+            with grid[2]:
+                if i == 0:
+                    st.selectbox('Y - Py MI Lab Attribute', JSON_atts,key=f'func_c_{i}')
+                else:
+                    st.selectbox('Y - Py MI Lab Attribute', JSON_atts, key=f'func_c_{i}',label_visibility = "collapsed")
+
+        # Save the data
+        Config = st.session_state['Config']
+        for i in range(len(atts)):
+            Config['Functional'][atts[i]]['X'] = st.session_state[f'func_b_{i}']
+            Config['Functional'][atts[i]]['Y'] = st.session_state[f'func_c_{i}']
+        st.session_state['Config'] = Config
+
+
+    if 'tab_exp' not in st.session_state:
+            st.session_state['tab_exp'] = False
+    else:
+        st.session_state['tab_exp'] = True
+
+    JSON_atts = ['']
+    # -- Raw Data
+    Raw_cat = list(Raw.keys())
+    for j in range(len(Raw_cat)):
+        Raw_att = list(Raw[Raw_cat[j]].keys())
+        for k in range(len(Raw_att)):
+            if Raw[Raw_cat[j]][Raw_att[k]]['Type'] != 'dict':
+                att_name = Raw_cat[j] + ' - ' + Raw_att[k]
+                JSON_atts.append(att_name)
+
+    # -- Analysis Data
+    Analysis_cat = list(Analysis.keys())
+    for j in range(len(Analysis_cat)):
+        Analysis_att = list(Analysis[Analysis_cat[j]].keys())
+        for k in range(len(Analysis_att)):
+            if Analysis[Analysis_cat[j]][Analysis_att[k]]['Type'] != 'dict':
+                att_name = Analysis_cat[j] + ' - ' + Analysis_att[k]
+                JSON_atts.append(att_name)
+
+    def update_tab():
+        with st.expander('Tabular Attributes', expanded = st.session_state['tab_exp']):
+            # Get List of Schema Attributes
+            atts = list(Atts['Tabular'].keys())
+
+            if "ct" not in st.session_state:
+                st.session_state["ct"] = 0
+
+            # Get the max number of columns
+            if "max_col" not in st.session_state:
+                max_col = 0
+                for i in range(len(atts)):
+                    if len(Atts['Tabular'][atts[i]]['Columns']) > max_col:
+                        max_col = len(Atts['Tabular'][atts[i]]['Columns']) 
+                st.session_state["max_col"] = max_col
                 
-                col_vals = []
-                new_vals = []
-    
-                if st.session_state['prev_opt'] != st.session_state['tab_att_opt']:
-                    st.session_state["ct"] = st.session_state["ct"]+1
-    
-                tab_cols = st.columns(2)
-                D = st.session_state["col_names"]
-    
-                for i in range(len(GrantaCols)):
-                    col_vals.append('')
-                    new_vals.append('')
-    
-                    with tab_cols[0]:
-                        D["var1_" + str(i)] = st.empty()
-                        if i == 0:
-                            col_vals[i] = D["var1_" + str(i)].text_input('Database Attribute',value = GrantaCols[i], key = f'tab_a_{st.session_state["ct"]+i}')
-                        else:
-                            col_vals[i] = D["var1_" + str(i)].text_input('Database Attribute',value = GrantaCols[i], key = f'tab_a_{st.session_state["ct"]+i}', label_visibility="collapsed")
-                    with tab_cols[1]:
-                        D["var2_" + str(i)]= st.empty()
-    
-                        # Get index
-                        if PyCols[i] == None:
-                            idx = None
-                        else:
-                            idx = JSON_atts.index(PyCols[i])
-                        
-                        if i == 0:
-                            new_vals[i] = D["var2_" + str(i)].selectbox('Py MI Lab Attribute',JSON_atts,index = idx, key = f'tab_b_{st.session_state["ct"]+i}')
-                        else:
-                            new_vals[i] = D["var2_" + str(i)].selectbox('Database Attribute',JSON_atts, index = idx, key = f'tab_b_{st.session_state["ct"]+i}', label_visibility="collapsed")
-    
-                    st.session_state["col_names"] = D            
-                    st.session_state['change_opt'] = False
-    
-                if st.session_state['prev_opt'] != st.session_state['tab_att_opt']:
-                    st.session_state['prev_opt'] = st.session_state['tab_att_opt']
-    
-    
-                # Store the Data
-                Config['Tabular'][att_name]['PyCols'] = []
-                for j in range(len(new_vals)):
-                    Config['Tabular'][att_name]['PyCols'].append(new_vals[j])
-    
-                st.session_state['Config'] = Config
+            # Create a Select Box for the different tabular attributes
+            tab_att_opt = st.selectbox('Select the tabular attribute',atts, key='tab_att_opt')
+
+            if 'prev_opt' not in st.session_state:
+                st.session_state['prev_opt'] = tab_att_opt
+
+            if "col_names" not in st.session_state:
+                st.session_state["col_names"] = {}
+
+            # Initialize the table
+            if "tab_init" not in st.session_state:
+                st.session_state["tab_init"] = True
+
+            # Get the attribute
+            att_name = st.session_state["tab_att_opt"]
+
+            # Get the Current Data
+            Config = st.session_state['Config']
+            GrantaCols = Config['Tabular'][att_name]['GrantaCols']
+            PyCols = Config['Tabular'][att_name]['PyCols']
+            
+            col_vals = []
+            new_vals = []
+
+            if st.session_state['prev_opt'] != st.session_state['tab_att_opt']:
+                st.session_state["ct"] = st.session_state["ct"]+1
+
+            tab_cols = st.columns(2)
+            D = st.session_state["col_names"]
+
+            for i in range(len(GrantaCols)):
+                col_vals.append('')
+                new_vals.append('')
+
+                with tab_cols[0]:
+                    D["var1_" + str(i)] = st.empty()
+                    if i == 0:
+                        col_vals[i] = D["var1_" + str(i)].text_input('Database Attribute',value = GrantaCols[i], key = f'tab_a_{st.session_state["ct"]+i}')
+                    else:
+                        col_vals[i] = D["var1_" + str(i)].text_input('Database Attribute',value = GrantaCols[i], key = f'tab_a_{st.session_state["ct"]+i}', label_visibility="collapsed")
+                with tab_cols[1]:
+                    D["var2_" + str(i)]= st.empty()
+
+                    # Get index
+                    if PyCols[i] == None:
+                        idx = None
+                    else:
+                        idx = JSON_atts.index(PyCols[i])
                     
-        update_tab()
+                    if i == 0:
+                        new_vals[i] = D["var2_" + str(i)].selectbox('Py MI Lab Attribute',JSON_atts,index = idx, key = f'tab_b_{st.session_state["ct"]+i}')
+                    else:
+                        new_vals[i] = D["var2_" + str(i)].selectbox('Database Attribute',JSON_atts, index = idx, key = f'tab_b_{st.session_state["ct"]+i}', label_visibility="collapsed")
+
+                st.session_state["col_names"] = D            
+                st.session_state['change_opt'] = False
+
+            if st.session_state['prev_opt'] != st.session_state['tab_att_opt']:
+                st.session_state['prev_opt'] = st.session_state['tab_att_opt']
+
+
+            # Store the Data
+            Config['Tabular'][att_name]['PyCols'] = []
+            for j in range(len(new_vals)):
+                Config['Tabular'][att_name]['PyCols'].append(new_vals[j])
+
+            st.session_state['Config'] = Config
+                
+    update_tab()
+
+    # Create the config file
+    json_string = json.dumps(st.session_state['Config'])
+
+    #st.json(json_string, expanded=True)
     
-        # Create the config file
-        json_string = json.dumps(st.session_state['Config'])
-    
-        #st.json(json_string, expanded=True)
-        
-        st.download_button(
-            label="Download Configuration File",
-            file_name=st.session_state["schema_name"] + ".json",
-            mime="application/json",
-            data=json_string,
-        )
-    
+    st.download_button(
+        label="Download Configuration File",
+        file_name=st.session_state["schema_name"] + ".json",
+        mime="application/json",
+        data=json_string,
+    )
+
             
 
 
