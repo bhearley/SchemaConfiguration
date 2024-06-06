@@ -448,7 +448,7 @@ else:
                     st.text_input('Value', value = None, key = f'folder_sec_b_{m}_{n}')
                 else:
                     st.text_input('Value', value = None, key = f'folder_sec_b_{m}_{n}', label_visibility="collapsed")
-            with grid_sec[4]:
+            with grid_sec[3]:
                 if n == 0:
                     st.text_input('Value', value = '[attribute]', key = f'folder_sec_c_{m}_{n}')
                 else:
