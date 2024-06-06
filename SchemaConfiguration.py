@@ -229,6 +229,8 @@ else:
         atts = list(Atts['Single Value'].keys())
         Config = st.session_state['Config']
 
+        st.write(Config)
+
          # Get List of all JSON Attributes
         JSON_atts = ['']
         # -- Raw Data
@@ -261,9 +263,9 @@ else:
                     st.text_input('Database Attribute',value = atts[i], key = f'single_val_a_{i}',label_visibility = "collapsed")
             with grid[1]:
                 if i == 0:
-                    st.selectbox('Py MI Lab Attribute', JSON_atts, index = JSON_atts.index(Config['Single Value'][atts[k]]), key=f'single_val_b_{i}')
+                    st.selectbox('Py MI Lab Attribute', JSON_atts, index = JSON_atts.index(Config['Single Value'][atts[i]]), key=f'single_val_b_{i}')
                 else:
-                    st.selectbox('Py MI Lab Attribute', JSON_atts, index = JSON_atts.index(Config['Single Value'][atts[k]]), key=f'single_val_b_{i}',label_visibility = "collapsed")
+                    st.selectbox('Py MI Lab Attribute', JSON_atts, index = JSON_atts.index(Config['Single Value'][atts[i]]), key=f'single_val_b_{i}',label_visibility = "collapsed")
 
         # Save the data
         Config = st.session_state['Config']
