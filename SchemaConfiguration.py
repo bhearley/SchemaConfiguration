@@ -438,6 +438,7 @@ else:
         grid_lev = st.columns([0.8,0.2])
 
         def create_cond_table(n):
+            grid_sec = st.columns([0.1, 0.3, 0.3, 0.3])
             with grid_sec[1]:
                 if n == 0:
                     st.selectbox('Condition',('Equals'),key = f'folder_sec_a_{n}')
@@ -456,8 +457,7 @@ else:
                     st.text_input('Conditions', value = 1, min_value = 0, step = 1, key = f'folder_lev_b_{m}', label_visibility = "collapsed")
 
             
-            for n in range(st.session_state[f'folder_lev_b_{m}']):
-                grid_sec = st.columns([0.1, 0.3, 0.3, 0.3])
+            for n in range(st.session_state[f'folder_lev_b_{m}']): 
                 create_cond_table(n)
 
                 # if m == 0:
