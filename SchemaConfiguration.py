@@ -429,6 +429,10 @@ else:
     # Update Tabular Attributes
     update_tab()
 
+    with st.expander('Record Placement'):
+        # Create the number of levels
+        num_lev = st.number_input('Number of Folder Levels', value = None, step = 1, key = 'num_lev')
+
     # Create the config file
     json_string = json.dumps(st.session_state['Config'])
 
