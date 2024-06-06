@@ -432,6 +432,18 @@ else:
     with st.expander('Record Placement'):
         # Create the number of levels
         num_lev = st.number_input('Number of Folder Levels', value = None, step = 1, key = 'num_lev')
+        grid_lev = st.columns([0.1,0.8,0.1])
+
+        def create_folder_table(m):
+            with grid_lev[0]:
+                if m == 0:
+                    st.number_input('Levels', value = m+1, step = 1, key = f'num_lev_{m}', disabled = True)
+                else:
+                    st.number_input('Levels', value = m+1, step = 1, key = f'num_lev_{m}', disabled = True, label_visibility = "collapsed")
+                
+
+        for m in range(st.session_state['num_lev']):
+            create_folder_table(m)
 
     # Create the config file
     json_string = json.dumps(st.session_state['Config'])
