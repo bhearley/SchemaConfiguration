@@ -47,14 +47,14 @@ if "excel_flag" not in st.session_state:
 
     # Create Instructions
     instruct1 = st.empty()
-    instruct1.markdown("Upload either a new Excel (.xlsx) file to configure a new schema or a previous Configuration (.config) file to " +  
+    instruct1.markdown("Upload either a new Excel (.xlsx) file to configure a new schema or a previous Configuration (.json) file to " +  
                        "load a previous configuration. For new configurations, enter a unique schema configuration name.")
 
     
 
     # Create File Uploader Button
     file = st.empty()
-    filename = file.file_uploader('Upload a Excel Schema or Configuration File', type = ['xlsx','config'],
+    filename = file.file_uploader('Upload a Excel Schema or Configuration File', type = ['xlsx','json'],
                             accept_multiple_files = False, key = "file")
 
 else:
