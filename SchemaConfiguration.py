@@ -431,8 +431,19 @@ else:
                 Config['Tabular'][att_name]['PyCols'].append(new_vals[j])
 
             st.session_state['Config'] = Config
-                
+
+    # Update Tabular Attributes
     update_tab()
+
+    # Repopulate JSON Attributes upon reload
+    if st.session_state['json_flag'] == 2:
+        st.session_state['json_flag'] = 3
+        Config = st.session_state['Config']
+        
+        # Update Single Value Attibutes
+        sing_atts = list(Config['Single Value'].keys())
+        for k in range(len(sing_atts)):
+            st.session_state[f'single_val_b_{k}] = Config['Single Value']['sing_atts[k]]
 
     # Create the config file
     json_string = json.dumps(st.session_state['Config'])
