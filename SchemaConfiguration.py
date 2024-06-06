@@ -307,14 +307,14 @@ else:
                     st.text_input('Database Attribute',value = atts[i], key = f'func_a_{i}',label_visibility = "collapsed")
             with grid[1]:
                 if i == 0:
-                    st.selectbox('X - Py MI Lab Attribute', JSON_atts,key=f'func_b_{i}')
+                    st.selectbox('X - Py MI Lab Attribute', JSON_atts, index = JSON_atts.index(Config['Functional'][atts[i]]['X']), key=f'func_b_{i}')
                 else:
-                    st.selectbox('X - Py MI Lab Attribute', JSON_atts, key=f'func_b_{i}',label_visibility = "collapsed")
+                    st.selectbox('X - Py MI Lab Attribute', JSON_atts, index = JSON_atts.index(Config['Functional'][atts[i]]['X']), key=f'func_b_{i}',label_visibility = "collapsed")
             with grid[2]:
                 if i == 0:
-                    st.selectbox('Y - Py MI Lab Attribute', JSON_atts,key=f'func_c_{i}')
+                    st.selectbox('Y - Py MI Lab Attribute', JSON_atts, index = JSON_atts.index(Config['Functional'][atts[i]]['Y']), key=f'func_c_{i}')
                 else:
-                    st.selectbox('Y - Py MI Lab Attribute', JSON_atts, key=f'func_c_{i}',label_visibility = "collapsed")
+                    st.selectbox('Y - Py MI Lab Attribute', JSON_atts, index = JSON_atts.index(Config['Functional'][atts[i]]['Y']), key=f'func_c_{i}',label_visibility = "collapsed")
 
         # Save the data
         Config = st.session_state['Config']
