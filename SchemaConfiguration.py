@@ -174,9 +174,7 @@ else:
         st.session_state['Config'] = Prev_Config
 
         # Get the Atts List
-        Atts = {'Single Value':{},
-                'Functional':{},
-                'Tabular':{}}
+        st.session_state['Atts'] = Prev_Config['Atts']
 
         
 
@@ -223,11 +221,10 @@ else:
                 temp.append('')
             Config['Tabular'][tab_atts[i]]['PyCols'] = temp
 
+        # -- Save Atts for future use
+        Config['Atts'] = st.session_state['Atts']
+
         st.session_state['Config'] = Config
-
-        st.write(Config)
-        
-
 
     with st.expander('Single Value Attributes'):
         # Get List of Schema Attributes
