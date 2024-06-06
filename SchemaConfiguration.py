@@ -437,9 +437,11 @@ else:
         def create_folder_table(m):
             with grid_lev[0]:
                 if m == 0:
-                    st.number_input('Levels', value = m+1, step = 1, key = f'num_lev_{m}', disabled = True)
+                    st.markdown(m+1)
+                    #st.number_input('Levels', value = m+1, step = 1, key = f'num_lev_{m}', disabled = True)
                 else:
-                    st.number_input('Levels', value = m+1, step = 1, key = f'num_lev_{m}', disabled = True, label_visibility = "collapsed")
+                    st.markdown(m+1)
+                    #st.number_input('Levels', value = m+1, step = 1, key = f'num_lev_{m}', disabled = True, label_visibility = "collapsed")
                 
 
         for m in range(st.session_state['num_lev']):
