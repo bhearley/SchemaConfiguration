@@ -440,9 +440,9 @@ else:
             grid_sec = st.columns([0.1, 0.2, 0.3, 0.4])
             with grid_sec[1]:
                 if n == 0:
-                    st.selectbox('Condition',['Equals','Greater Than','Less Than'],key = f'folder_sec_a_{m}_{n}')
+                    st.selectbox('Condition',['Always','Equals','Greater Than','Less Than'],key = f'folder_sec_a_{m}_{n}')
                 else:
-                    st.selectbox('Condition',['Equals','Greater Than','Less Than'],key = f'folder_sec_a_{m}_{n}', label_visibility="collapsed")
+                    st.selectbox('Condition',['Always','Equals','Greater Than','Less Than'],key = f'folder_sec_a_{m}_{n}', label_visibility="collapsed")
             with grid_sec[2]:
                 if n == 0:
                     st.text_input('Value', value = None, key = f'folder_sec_b_{m}_{n}')
