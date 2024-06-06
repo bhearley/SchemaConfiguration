@@ -435,22 +435,29 @@ else:
     with st.expander('Record Placement'):
         # Create the number of levels
         num_lev = st.number_input('Number of Folder Levels', value = None, min_value = 0, step = 1, key = 'num_lev')
-        grid_lev = st.columns([0.1,0.8,0.1])
+        grid_lev = st.columns([0.8,0.2])
 
+        def create_cond_table(n):
+            with grid_sec[1]:
+                if n == 0:
+                    st.selectbox('Condition',('Equals'),key = f'folder_sec_a_{n}')
+                else:
+                    st.selectbox('Condition',('Equals'),key = f'folder_sec_a_{n}', label_visibility="collapsed")
         def create_folder_table(m):
             with grid_lev[0]:
-                st.markdown(m+1)
-            with grid_lev[1]:
                 if m == 0:
                     st.selectbox('Attribute', st.session_state['single_json'], key = f'folder_lev_a_{m}')
                 else:
                     st.selectbox('Attribute', st.session_state['single_json'], key = f'folder_lev_a_{m}', label_visibility = "collapsed")
-            with grid_lev[2]:
+            with grid_lev[1]:
                 if m == 0:
                     st.number_input('Conditions', value = 1, min_value = 0, step = 1, key = f'folder_lev_b_{m}')
                 else:
                     st.text_input('Conditions', value = 1, min_value = 0, step = 1, key = f'folder_lev_b_{m}', label_visibility = "collapsed")
 
+            grid_sec = st.columns[0.1, 0.3, 0.3, 0.3]
+            for n in range(st.session_state[f'folder_lev_b_{m}']):
+                create_cond_table(n)
 
                 # if m == 0:
                 #     st.text_input('Format', value = '[value]', key = f'folder_lev_b_{m}')
