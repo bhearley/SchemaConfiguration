@@ -455,8 +455,9 @@ else:
                 else:
                     st.text_input('Conditions', value = 1, min_value = 0, step = 1, key = f'folder_lev_b_{m}', label_visibility = "collapsed")
 
-            grid_sec = st.columns([0.1, 0.3, 0.3, 0.3])
+            
             for n in range(st.session_state[f'folder_lev_b_{m}']):
+                grid_sec = st.columns([0.1, 0.3, 0.3, 0.3])
                 create_cond_table(n)
 
                 # if m == 0:
