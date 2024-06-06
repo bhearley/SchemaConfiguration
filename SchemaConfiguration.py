@@ -164,8 +164,6 @@ else:
         # Set the Excel Flag
         st.session_state['Atts'] = Atts
 
-        st.write(Atts)
-
     elif st.session_state['json_flag'] == 1:
         st.session_state['json_flag'] = 2
 
