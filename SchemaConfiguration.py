@@ -227,6 +227,7 @@ else:
     with st.expander('Single Value Attributes'):
         # Get List of Schema Attributes
         atts = list(Atts['Single Value'].keys())
+        Config = st.session_state['Config']
 
          # Get List of all JSON Attributes
         JSON_atts = ['']
