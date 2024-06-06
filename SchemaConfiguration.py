@@ -20,9 +20,6 @@ from openpyxl import load_workbook
 raw_template = "/mount/src/schemaconfiguration/Raw_Template.json"
 analysis_template = "/mount/src/schemaconfiguration/Analysis_Template.json"
 
-# Initialize Flags
-excel_flag = 0
-
 #==================================================================================================================================================================
 # GENERAL INFORMATION
 # Set the web app general information not edited by the user
