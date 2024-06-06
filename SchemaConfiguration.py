@@ -164,9 +164,21 @@ else:
         # Set the Excel Flag
         st.session_state['Atts'] = Atts
 
-    elif 'json' in st.session_state['file'].name:
+        st.write(Atts)
+
+    elif st.session_state['json_flag'] == 1:
+        st.session_state['json_flag'] = 2
+
+        # Load the Previous Configuration
         Prev_Config = json.load(st.session_state['file'])
-        st.write(Prev_Config)
+        st.session_state['Config'] = Prev_Config
+
+        # Get the Atts List
+        Atts = {'Single Value':{},
+                'Functional':{},
+                'Tabular':{}}
+
+        
 
     # Load the Raw and Analysis Template File
     f = open(raw_template)
@@ -212,6 +224,8 @@ else:
             Config['Tabular'][tab_atts[i]]['PyCols'] = temp
 
         st.session_state['Config'] = Config
+
+        st.write(Config)
         
 
 
