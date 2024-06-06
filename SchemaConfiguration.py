@@ -264,6 +264,9 @@ else:
             Config['Single Value'][atts[i]] = st.session_state[f'single_val_b_{i}']
         st.session_state['Config'] = Config
 
+        # Save Single JSON atts
+        st.session_state['single_json'] = JSON_atts
+
     with st.expander('Functional Attributes'):
         # Get List of Schema Attributes
         atts = list(Atts['Functional'].keys())
@@ -431,21 +434,32 @@ else:
 
     with st.expander('Record Placement'):
         # Create the number of levels
-        num_lev = st.number_input('Number of Folder Levels', value = None, step = 1, key = 'num_lev')
+        num_lev = st.number_input('Number of Folder Levels', value = None, min_value = 0, step = 1, key = 'num_lev')
         grid_lev = st.columns([0.1,0.8,0.1])
 
         def create_folder_table(m):
             with grid_lev[0]:
+                st.markdown(m+1)
+            with grid_lev[1]:
                 if m == 0:
-                    st.markdown(m+1)
-                    #st.number_input('Levels', value = m+1, step = 1, key = f'num_lev_{m}', disabled = True)
+                    st.selectbox('Attribute', st.session_state['single_json'], key = f'folder_lev_a_{m}')
                 else:
-                    st.markdown(m+1)
-                    #st.number_input('Levels', value = m+1, step = 1, key = f'num_lev_{m}', disabled = True, label_visibility = "collapsed")
-                
+                    st.selectbox('Attribute', st.session_state['single_json'], key = f'folder_lev_a_{m}', label_visibility = "collapsed")
+            with grid_lev[2]:
+                if m == 0:
+                    st.number_input('Conditions', value = 1, min_value = 0, step = 1, key = f'folder_lev_b_{m}')
+                else:
+                    st.text_input('Conditions', value = 1, min_value = 0, step = 1, key = f'folder_lev_b_{m}', label_visibility = "collapsed")
 
-        for m in range(st.session_state['num_lev']):
-            create_folder_table(m)
+
+                # if m == 0:
+                #     st.text_input('Format', value = '[value]', key = f'folder_lev_b_{m}')
+                # else:
+                #     st.text_input('Attribute', value = '[value]', key = f'folder_lev_b_{m}', label_visibility = "collapsed")
+
+        if st.session_state['num_lev'] != None:
+            for m in range(st.session_state['num_lev']):
+                create_folder_table(m)
 
     # Create the config file
     json_string = json.dumps(st.session_state['Config'])
