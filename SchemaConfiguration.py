@@ -61,9 +61,11 @@ if "excel_flag" not in st.session_state:
         if 'xlsx' in st.session_state['file'].name:
             st.session_state['excel_flag'] = 1
             st.session_state['json_flag'] = 0
+            st.write('excel')
         else:
             st.session_state['excel_flag'] = 0
             st.session_state['json_flag'] = 1
+            st.write('json')
         
 
 else:
