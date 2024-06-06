@@ -437,12 +437,23 @@ else:
         num_lev = st.number_input('Number of Folder Levels', value = None, min_value = 0, step = 1, key = 'num_lev')
     
         def create_cond_table(m,n):
-            grid_sec = st.columns([0.1, 0.3, 0.3, 0.3])
+            grid_sec = st.columns([0.1, 0.2, 0.3, 0.4])
             with grid_sec[1]:
                 if n == 0:
                     st.selectbox('Condition',['Equals','Greater Than','Less Than'],key = f'folder_sec_a_{m}_{n}')
                 else:
                     st.selectbox('Condition',['Equals','Greater Than','Less Than'],key = f'folder_sec_a_{m}_{n}', label_visibility="collapsed")
+            with grid_sec[2]:
+                if n == 0:
+                    st.text_input('Value', value = None, key = f'folder_sec_b_{m}_{n}')
+                else:
+                    st.text_input('Value', value = None, key = f'folder_sec_b_{m}_{n}', label_visibility="collapsed")
+            with grid_sec[4]:
+                if n == 0:
+                    st.text_input('Value', value = '[attribute]', key = f'folder_sec_c_{m}_{n}')
+                else:
+                    st.text_input('Value', value = '[attribute]', key = f'folder_sec_c_{m}_{n}', label_visibility="collapsed")
+            
         def create_folder_table(m):
             grid_lev = st.columns([0.8,0.2])
             with grid_lev[0]:
