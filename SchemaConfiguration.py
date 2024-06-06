@@ -174,8 +174,6 @@ else:
         # Get the Atts List
         st.session_state['Atts'] = Prev_Config['Atts']
 
-        st.write(st.session_state['Config'])
-        
 
     # Load the Raw and Analysis Template File
     f = open(raw_template)
@@ -229,8 +227,6 @@ else:
         # Get List of Schema Attributes
         atts = list(Atts['Single Value'].keys())
         Config = st.session_state['Config']
-
-        st.write(Config)
 
          # Get List of all JSON Attributes
         JSON_atts = ['']
