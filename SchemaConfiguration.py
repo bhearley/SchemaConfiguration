@@ -43,6 +43,7 @@ name = st.text_input('Name the Configuration',value = "New Schema Configuration"
 if "excel_flag" not in st.session_state:
     # Initialize Session State
     st.session_state['excel_flag'] = 0
+    st.session_state['json_flag'] = 0
 
     # Create Instructions
     instruct1 = st.empty()
@@ -58,100 +59,101 @@ if "excel_flag" not in st.session_state:
 
 else:
     if 'file' in st.session_state:
-        st.session_state['excel_flag'] = 1
-
-
-        # Read The Excel File and Get MI Attributes
-        wb = load_workbook(st.session_state['file'], data_only=True, read_only=True)
-        # Get List of Sheets
-        Sheets = []
-        i = 0
-        while wb.sheetnames[i] != 'Data':
-            Sheets.append(wb.sheetnames[i])
-            i=i+1
-        Sheets.append('Data')
-
-        # Get List of Attributes
-        Atts = {'Single Value':{},
-                'Functional':{},
-                'Tabular':{}}
-
-        # Read the tabular and functional data attributes
-        for i in range(len(Sheets)-1):
-            # Open the sheet
-            ws = wb[Sheets[i]]
-
-            # Get the attribute name
-            att_name = ws.cell(row=4,column=2).value
-
-            # Determine if the attribute is functional or tabular
-            # -- 0 = functional
-            # -- 1 = tabular
-            att_flag = 0
-            if ws.cell(row=7,column = 3).value == 'Row Number':
-                att_flag = 1
-                row_num = 7
-
-            # Get Functional Data Information
-            if att_flag == 0:
-                # Get X and Y Names
-                x_name = ws.cell(row = 8,column=3).value
-                y_name = ws.cell(row = 8,column=4).value
-
-                # Check for Units
-                x_att = x_name
-                x_unit = None
-                if x_name[-1] == ')':
-                    idx = x_name.index("(")
-                    x_att = x_name[:idx-1]
-                    x_unit = x_name[idx+1:len(x_name)-1]
-
-                y_att = y_name
-                y_unit = None
-                if y_name[-1] == ')':
-                    idx = y_name.index("(")
-                    y_att = y_name[:idx-1]
-                    y_unit = y_name[idx+1:len(y_name)-1]
-
-                Atts['Functional'][att_name] = {'Variables':[x_att, y_att],
-                                                'Units':[x_unit, y_unit]}
-
-            # Get Tabular Data Information
-            else:
-                # Get the editable column names (don't include row number)
-                cols = []
-                units = []
-                col_num = 4
-                while ws.cell(row=row_num,column=col_num).value != None:
-                    # Get the color of cell
-                    clr = ws.cell(row=row_num,column=col_num).fill.start_color.index 
-                    if clr == 'FFFFFF00':
-                        # Check for associated units
-                        row_name = ws.cell(row=row_num,column=col_num).value
-                        row_att = row_name
-                        row_unit = None
-                        if row_name[-1] == ')':
-                            idx = row_name.index("(")
-                            row_att = row_name[:idx-1]
-                            row_unit = row_name[idx+1:len(row_name)-1]
-                            temp=1
-
-                        cols.append(row_att)
-                        units.append(row_unit)
-                    col_num = col_num+1
-                Atts['Tabular'][att_name] = {'Columns':cols,
-                                                'Units':units}
-
-        # Get The Single Value Attributes
-        ws = wb['Data']
-
-        for k in range(10, ws.max_row+1):
-            # Check the color for a header
-            if ws.cell(row=k,column=3).fill.start_color.index == 'FFFFFFFF' and ws.cell(row=k,column=3).value != None:
-                Atts['Single Value'][ws.cell(row=k,column=3).value]= ws.cell(row=k,column=4).value
-
-        # Set the Excel Flag
-        st.session_state['Atts'] = Atts
+        if 'xlsx' in st.session_state['file'].name"
+            st.session_state['excel_flag'] = 1
+    
+    
+            # Read The Excel File and Get MI Attributes
+            wb = load_workbook(st.session_state['file'], data_only=True, read_only=True)
+            # Get List of Sheets
+            Sheets = []
+            i = 0
+            while wb.sheetnames[i] != 'Data':
+                Sheets.append(wb.sheetnames[i])
+                i=i+1
+            Sheets.append('Data')
+    
+            # Get List of Attributes
+            Atts = {'Single Value':{},
+                    'Functional':{},
+                    'Tabular':{}}
+    
+            # Read the tabular and functional data attributes
+            for i in range(len(Sheets)-1):
+                # Open the sheet
+                ws = wb[Sheets[i]]
+    
+                # Get the attribute name
+                att_name = ws.cell(row=4,column=2).value
+    
+                # Determine if the attribute is functional or tabular
+                # -- 0 = functional
+                # -- 1 = tabular
+                att_flag = 0
+                if ws.cell(row=7,column = 3).value == 'Row Number':
+                    att_flag = 1
+                    row_num = 7
+    
+                # Get Functional Data Information
+                if att_flag == 0:
+                    # Get X and Y Names
+                    x_name = ws.cell(row = 8,column=3).value
+                    y_name = ws.cell(row = 8,column=4).value
+    
+                    # Check for Units
+                    x_att = x_name
+                    x_unit = None
+                    if x_name[-1] == ')':
+                        idx = x_name.index("(")
+                        x_att = x_name[:idx-1]
+                        x_unit = x_name[idx+1:len(x_name)-1]
+    
+                    y_att = y_name
+                    y_unit = None
+                    if y_name[-1] == ')':
+                        idx = y_name.index("(")
+                        y_att = y_name[:idx-1]
+                        y_unit = y_name[idx+1:len(y_name)-1]
+    
+                    Atts['Functional'][att_name] = {'Variables':[x_att, y_att],
+                                                    'Units':[x_unit, y_unit]}
+    
+                # Get Tabular Data Information
+                else:
+                    # Get the editable column names (don't include row number)
+                    cols = []
+                    units = []
+                    col_num = 4
+                    while ws.cell(row=row_num,column=col_num).value != None:
+                        # Get the color of cell
+                        clr = ws.cell(row=row_num,column=col_num).fill.start_color.index 
+                        if clr == 'FFFFFF00':
+                            # Check for associated units
+                            row_name = ws.cell(row=row_num,column=col_num).value
+                            row_att = row_name
+                            row_unit = None
+                            if row_name[-1] == ')':
+                                idx = row_name.index("(")
+                                row_att = row_name[:idx-1]
+                                row_unit = row_name[idx+1:len(row_name)-1]
+                                temp=1
+    
+                            cols.append(row_att)
+                            units.append(row_unit)
+                        col_num = col_num+1
+                    Atts['Tabular'][att_name] = {'Columns':cols,
+                                                    'Units':units}
+    
+            # Get The Single Value Attributes
+            ws = wb['Data']
+    
+            for k in range(10, ws.max_row+1):
+                # Check the color for a header
+                if ws.cell(row=k,column=3).fill.start_color.index == 'FFFFFFFF' and ws.cell(row=k,column=3).value != None:
+                    Atts['Single Value'][ws.cell(row=k,column=3).value]= ws.cell(row=k,column=4).value
+    
+            # Set the Excel Flag
+            st.session_state['Atts'] = Atts
 
         # Load the Raw and Analysis Template File
         f = open(raw_template)
