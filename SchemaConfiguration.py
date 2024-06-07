@@ -435,10 +435,13 @@ else:
     with st.expander('Record Placement'):
         #Re-open Config
         Config = st.session_state['Config']
-        if "Placement" in list(Config.keys()):
-            num_val = len(list(Config["Placement"].keys()))
-        else:
-            num_val = 0     
+
+        if st.session_state['json_flag'] == 2:
+            st.session_state['json_flag'] = 3
+            if "Placement" in list(Config.keys()):
+                num_val = len(list(Config["Placement"].keys()))
+            else:
+                num_val = 0     
 
         
         # Create the number of levels
