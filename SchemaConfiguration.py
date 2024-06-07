@@ -3,20 +3,20 @@
 #   Brandon Hearley - LMS
 #   6/4/2024
 #
-#   PURPOSE: Create a web app (using streamlit) to filter data collected and stored on the NASA
-#            GRC Lab Infrastructure and generate a Word Report
+#   PURPOSE: Allow users to configure the Py MILab Nuetral Files to their Granta MI Schema
 #
 #==================================================================================================================================================================
 # SETUP
 # Import the necessary modules to run the app and set paths
 
 # Import Modules
+# -- See requirements.txt for any specific module versions
 import time
 import json
 import streamlit as st
 from openpyxl import load_workbook
 
-# Set Home Directory
+# Set Template Directories
 raw_template = "/mount/src/schemaconfiguration/Raw_Template.json"
 analysis_template = "/mount/src/schemaconfiguration/Analysis_Template.json"
 
@@ -34,17 +34,12 @@ st.title("PyMILab Schema Configuration Manager")
 # SCHEMA SELECTION
 # Generate a new configuation file or load one from a previous save
 
+# If no file has been selected
 if "excel_flag" not in st.session_state:
-    # Initialize Session State
-    
-    
-
     # Create Instructions
     instruct1 = st.empty()
     instruct1.markdown("Upload either a new Excel (.xlsx) file to configure a new schema or a previous Configuration (.json) file to " +  
                        "load a previous configuration. For new configurations, enter a unique schema configuration name.")
-
-    
 
     # Create File Uploader Button
     file = st.empty()
@@ -60,28 +55,32 @@ if "excel_flag" not in st.session_state:
             st.session_state['json_flag'] = 1
 
         if st.button('Configure Schema'):
-            temp=1 # Just rerun code
+            temp=1 # Just rerun code with the flags defined
 
+# If a file has been selected
 else:
+    # Excel file - new configuration from Granta MI Schema
     if st.session_state['excel_flag'] == 1:
-        st.session_state['excel_flag'] = 2
+        # Set Flag to 2 - prevents rereading of input file
+        st.session_state['excel_flag'] = 2 
         
         # Read The Excel File and Get MI Attributes
-        wb = load_workbook(st.session_state['file'], data_only=True, read_only=True)
+        wb = load_workbook(st.session_state['file'], data_only=True, read_only=True) 
         # Get List of Sheets
-        Sheets = []
-        i = 0
+        Sheets = [] 
+        i = 0 
         while wb.sheetnames[i] != 'Data':
             Sheets.append(wb.sheetnames[i])
             i=i+1
         Sheets.append('Data')
 
         # Get List of Attributes
+        # -- Preallocate dictionary to store Granta MI Attribute names
         Atts = {'Single Value':{},
                 'Functional':{},
                 'Tabular':{}}
 
-        # Read the tabular and functional data attributes
+        # -- Read the tabular and functional data attributes
         for i in range(len(Sheets)-1):
             # Open the sheet
             ws = wb[Sheets[i]]
@@ -139,7 +138,6 @@ else:
                             idx = row_name.index("(")
                             row_att = row_name[:idx-1]
                             row_unit = row_name[idx+1:len(row_name)-1]
-                            temp=1
 
                         cols.append(row_att)
                         units.append(row_unit)
@@ -147,7 +145,7 @@ else:
                 Atts['Tabular'][att_name] = {'Columns':cols,
                                                 'Units':units}
 
-        # Get The Single Value Attributes
+        # -- Get The Single Value Attributes
         ws = wb['Data']
 
         for k in range(10, ws.max_row+1):
@@ -155,10 +153,12 @@ else:
             if ws.cell(row=k,column=3).fill.start_color.index == 'FFFFFFFF' and ws.cell(row=k,column=3).value != None:
                 Atts['Single Value'][ws.cell(row=k,column=3).value]= ws.cell(row=k,column=4).value
 
-        # Set the Excel Flag
+        # Store the Granta MI Attributes in the session state
         st.session_state['Atts'] = Atts
 
+    # JSON file - load configuration from previous use of the tool
     elif st.session_state['json_flag'] == 1:
+        # Set Flag to 2 - prevents rereading of input file
         st.session_state['json_flag'] = 2
 
         # Load the Previous Configuration
