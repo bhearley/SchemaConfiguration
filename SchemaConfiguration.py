@@ -477,6 +477,38 @@ else:
                 create_folder_table(m)
             st.markdown('''---''')
 
+        # Store the data in the Config
+        Config['Placement'] = {}
+        for m in range(st.session_state['num_lev']):
+            Config['Placement']['Level ' + str(n+1)] = []
+            for n in range(st.session_state[f'folder_lev_b_{m}']):
+                new_vec = []
+                if f'folder_sec_a_{m}_{n}' in st.session_state:
+                    new_vec.append(st.session_state[f'folder_sec_a_{m}_{n}'])
+                else:
+                    new_vec.append(None)
+                if f'folder_sec_b_{m}_{n}' in st.session_state:
+                    new_vec.append(st.session_state[f'folder_sec_b_{m}_{n}'])
+                else:
+                    new_vec.append(None)
+                if f'folder_sec_c_{m}_{n}' in st.session_state:
+                    new_vec.append(st.session_state[f'folder_sec_c_{m}_{n}'])
+                else:
+                    new_vec.append(None)
+                if f'folder_sec_d_{m}_{n}' in st.session_state:
+                    new_vec.append(st.session_state[f'folder_sec_d_{m}_{n}'])
+                else:
+                    new_vec.append(None)
+                if f'folder_sec_e_{m}_{n}' in st.session_state:
+                    new_vec.append(st.session_state[f'folder_sec_e_{m}_{n}'])
+                else:
+                    new_vec.append(None)
+                if f'folder_sec_f_{m}_{n}' in st.session_state:
+                    new_vec.append(st.session_state[f'folder_sec_f_{m}_{n}'])
+                else:
+                    new_vec.append(None)
+                Config['Placement']['Level ' + str(n+1)].append(new_vec)
+
     # Create the config file
     json_string = json.dumps(st.session_state['Config'])
 
