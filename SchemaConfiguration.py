@@ -437,6 +437,8 @@ else:
         Config = st.session_state['Config']
 
         if st.session_state['json_flag'] == 2:
+            st.write(Config["Placement"])
+            
             st.session_state['json_flag'] = 3
             if "Placement" in list(Config.keys()):
                 level_list = list(Config["Placement"].keys())
