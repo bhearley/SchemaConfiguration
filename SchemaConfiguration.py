@@ -437,7 +437,7 @@ else:
         num_lev = st.number_input('Number of Folder Levels', value = None, min_value = 0, step = 1, key = 'num_lev')
     
         def create_cond_table(m,n):
-            grid_sec = st.columns([0.025, 0.225, 0.05, 0.2, 0.25, 0.25])
+            grid_sec = st.columns([0.035, 0.215, 0.05, 0.2, 0.25, 0.25])
             with grid_sec[0]:
                 st.text_input('If',value= 'IF', disabled = True, key = f'folder_sec_a_{m}_{n}', label_visibility="collapsed")
             with grid_sec[1]:
