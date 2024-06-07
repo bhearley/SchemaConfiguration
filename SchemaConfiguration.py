@@ -482,7 +482,10 @@ else:
                     st.text_input("Folder Level", value = "Level " + str(m+1), disabled = True, key = f'folder_lev_a_{m}', label_visibility = "collapsed")
             with grid_lev[1]:
                 if "condition_list" in st.session_state:
-                    cond_val = st.session_state["condition_list"][m]
+                    if m < len(st.session_state["condition_list"]):
+                        cond_val = st.session_state["condition_list"][m]
+                    else:
+                        cond_val = 1
                 else:
                     cond_val = 1
                 if m == 0:
