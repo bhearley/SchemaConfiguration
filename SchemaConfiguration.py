@@ -449,6 +449,8 @@ else:
         else:
             if "num_lev" not in st.session_state:
                 num_val = 0   
+            else:
+                num_val = st.session_state['num_lev']
 
 
         
