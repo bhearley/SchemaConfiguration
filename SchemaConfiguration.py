@@ -436,9 +436,11 @@ else:
         #Re-open Config
         Config = st.session_state['Config']
         if "Placement" in list(Config.keys()):
+            st.write(Config["Placement"])
             num_val = len(Config["Placement"])
         else:
             num_val = 0     
+
         
         # Create the number of levels
         if "num_lev" in st.session_state:
