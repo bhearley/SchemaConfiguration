@@ -437,10 +437,8 @@ else:
         Config = st.session_state['Config']
         if "Placement" in list(Config.keys()):
             num_val = len(Config["Placement"])
-            if num_val == 0:
-                num_val = None
         else:
-            num_val = None     
+            num_val = 0     
         
         # Create the number of levels
         if "num_lev" in st.session_state:
