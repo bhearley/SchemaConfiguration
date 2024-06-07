@@ -435,17 +435,18 @@ else:
     with st.expander('Record Placement'):
         #Re-open Config
         Config = st.session_state['Config']
-        num_cond = []
+
         if st.session_state['json_flag'] == 2:
             st.session_state['json_flag'] = 3
             if "Placement" in list(Config.keys()):
                 level_list = list(Config["Placement"].keys())
                 num_val = len(level_list)
+                st.session_state['condition_list'] = []
                 for j in range(len(level_list)):
-                    num_cond.append(len(Config["Placement"][level_list[j]]))
+                    st.session_state['condition_list'] .append(len(Config["Placement"][level_list[j]]))
         else:
             num_val = 0   
-            num_cond = [1]
+
 
         
         # Create the number of levels
@@ -475,10 +476,14 @@ else:
                 else:
                     st.text_input("Folder Level", value = "Level " + str(m+1), disabled = True, key = f'folder_lev_a_{m}', label_visibility = "collapsed")
             with grid_lev[1]:
-                if m == 0:
-                    st.number_input('Conditions', value = num_cond[m], min_value = 0, step = 1, key = f'folder_lev_b_{m}')
+                if "condition_list" in st.session_state:
+                    cond_val = st.session_state["condition_list"][m]
                 else:
-                    st.number_input('Conditions', value = num_cond[m], min_value = 0, step = 1, key = f'folder_lev_b_{m}', label_visibility = "collapsed")
+                    cond_val = 1
+                if m == 0:
+                    st.number_input('Conditions', value = cond_val, min_value = 0, step = 1, key = f'folder_lev_b_{m}')
+                else:
+                    st.number_input('Conditions', value = cond_val, min_value = 0, step = 1, key = f'folder_lev_b_{m}', label_visibility = "collapsed")
 
             
             for n in range(st.session_state[f'folder_lev_b_{m}']): 
