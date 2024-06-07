@@ -463,7 +463,7 @@ else:
                 with grid_sec[0]:
                     st.text_input('If',value= 'IF', disabled = True, key = f'folder_sec_a_{m}_{n}', label_visibility="collapsed")
                 with grid_sec[1]:
-                    st.selectbox('Conditional Attribute', st.session_state['single_json'], index=None, placeholder = "Select the conditional attribute", key = f'folder_sec_b_{m}_{n}', label_visibility="collapsed")
+                    st.selectbox('Conditional Attribute', st.session_state['single_json'], index=st.session_state['single_json'].index(Config['Placement']['Level + str(m+1)'][0]), placeholder = "Select the conditional attribute", key = f'folder_sec_b_{m}_{n}', label_visibility="collapsed")
                 with grid_sec[2]:
                     st.text_input('Eq',value= 'EQ :', disabled = True, key = f'folder_sec_c_{m}_{n}', label_visibility="collapsed")
                 with grid_sec[3]:
