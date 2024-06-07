@@ -436,8 +436,7 @@ else:
         #Re-open Config
         Config = st.session_state['Config']
         if "Placement" in list(Config.keys()):
-            st.write(Config["Placement"])
-            num_val = len(Config["Placement"])
+            num_val = len(list(Config["Placement"].keys()))
         else:
             num_val = 0     
 
