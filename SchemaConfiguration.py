@@ -442,7 +442,7 @@ else:
                 level_list = list(Config["Placement"].keys())
                 num_val = len(level_list)
                 for j in range(len(level_list)):
-                    num_cond.append(len(Config["Placement"][level_list[i]]))
+                    num_cond.append(len(Config["Placement"][level_list[j]]))
         else:
             num_val = 0   
             num_cond = [1]
