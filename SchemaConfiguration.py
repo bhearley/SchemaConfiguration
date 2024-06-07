@@ -488,7 +488,7 @@ else:
             Config = st.session_state['Config']
             Config['Placement'] = {}
             for m in range(st.session_state['num_lev']):
-                Config['Placement']['Level ' + str(n+1)] = []
+                Config['Placement']['Level ' + str(m+1)] = []
                 for n in range(st.session_state[f'folder_lev_b_{m}']):
                     new_vec = []
                     if f'folder_sec_a_{m}_{n}' in st.session_state:
