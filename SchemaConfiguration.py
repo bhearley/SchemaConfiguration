@@ -447,7 +447,7 @@ else:
             with grid_sec[4]:
                 st.selectbox('Conditional Attribute', st.session_state['single_json'], placeholder = "Select the naming attribute and foramt", key = f'folder_sec_d_{m}_{n}', label_visibility="collapsed")
             with grid_sec[5]:
-                st.text_input('Eq',value= '[attribute]', , key = f'folder_sec_e_{m}_{n}', label_visibility="collapsed")
+                st.text_input('Eq',value= '[attribute]', key = f'folder_sec_e_{m}_{n}', label_visibility="collapsed")
             
         def create_folder_table(m):
             grid_lev = st.columns([0.8,0.2])
