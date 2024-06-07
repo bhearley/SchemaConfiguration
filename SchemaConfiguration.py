@@ -437,13 +437,15 @@ else:
         num_lev = st.number_input('Number of Folder Levels', value = None, min_value = 0, step = 1, key = 'num_lev')
     
         def create_cond_table(m,n):
-            grid_sec = st.columns([0.05, 0.05, 0.3, 0.05, 0.25, 0.3])
-            with grid_sec[1]:
+            grid_sec = st.columns([0.05, 0.2, 0.05, 0.2, 0.25, 0.25])
+            with grid_sec[0]:
                 st.text_input('If',value= 'IF', disabled = True, key = f'folder_sec_a_{m}_{n}', label_visibility="collapsed")
+            with grid_sec[1]:
+                st.selectbox('Conditional Attribute', st.session_state['single_json'], index=None, placeholder = "Select the conditional attribute", key = f'folder_sec_b_{m}_{n}', label_visibility="collapsed")
             with grid_sec[2]:
-                st.selectbox('Conditional Attribute', st.session_state['single_json'], index=None, placeholder = "Leave empty if always true", key = f'folder_sec_b_{m}_{n}', label_visibility="collapsed")
-            with grid_sec[3]:
                 st.text_input('Eq',value= 'EQ :', disabled = True, key = f'folder_sec_c_{m}_{n}', label_visibility="collapsed")
+            with grid_sec[3]:
+                st.text_input('Eq',value= None, placeholder = 'Enter the conditional value', key = f'folder_sec_c_{m}_{n}', label_visibility="collapsed")
             with grid_sec[4]:
                 st.selectbox('Conditional Attribute', st.session_state['single_json'], index= None, placeholder = "Select the naming attribute and format", key = f'folder_sec_d_{m}_{n}', label_visibility="collapsed")
             with grid_sec[5]:
