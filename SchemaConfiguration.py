@@ -457,7 +457,7 @@ else:
         
         # Create the number of levels
         num_lev = st.number_input('Number of Folder Levels', value = num_val, min_value = 0, step = 1, key = 'num_lev')
-    
+        st.write(Config['Placement'])
         def create_cond_table(m,n):
             grid_sec = st.columns([0.035, 0.215, 0.05, 0.2, 0.25, 0.25])
             if st.session_state[f'folder_lev_b_{m}'] != 1:
