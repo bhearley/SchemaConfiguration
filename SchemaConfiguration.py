@@ -445,11 +445,11 @@ else:
             with grid_sec[2]:
                 st.text_input('Eq',value= 'EQ :', disabled = True, key = f'folder_sec_c_{m}_{n}', label_visibility="collapsed")
             with grid_sec[3]:
-                st.text_input('Eq',value= None, placeholder = 'Enter the conditional value', key = f'folder_sec_c_{m}_{n}', label_visibility="collapsed")
+                st.text_input('Eq',value= None, placeholder = 'Enter the conditional value', key = f'folder_sec_d_{m}_{n}', label_visibility="collapsed")
             with grid_sec[4]:
-                st.selectbox('Conditional Attribute', st.session_state['single_json'], index= None, placeholder = "Select the naming attribute and format", key = f'folder_sec_d_{m}_{n}', label_visibility="collapsed")
+                st.selectbox('Conditional Attribute', st.session_state['single_json'], index= None, placeholder = "Select the naming attribute and format", key = f'folder_sec_e_{m}_{n}', label_visibility="collapsed")
             with grid_sec[5]:
-                st.text_input('Eq',value= '[attribute]', key = f'folder_sec_e_{m}_{n}', label_visibility="collapsed")
+                st.text_input('Eq',value= '[attribute]', key = f'folder_sec_f_{m}_{n}', label_visibility="collapsed")
             
         def create_folder_table(m):
             grid_lev = st.columns([0.8,0.2])
@@ -476,6 +476,7 @@ else:
         if st.session_state['num_lev'] != None:
             for m in range(st.session_state['num_lev']):
                 create_folder_table(m)
+            st.markdown('''---''')
 
     # Create the config file
     json_string = json.dumps(st.session_state['Config'])
