@@ -529,7 +529,8 @@ else:
                         new_vec.append(st.session_state[f'folder_sec_f_{m}_{n}'])
                     else:
                         new_vec.append(None)
-                    Config['Placement']['Level ' + str(n+1)].append(new_vec)
+                        
+                    Config['Placement']['Level ' + str(m+1)].append(new_vec)
 
     # Create the config file
     json_string = json.dumps(st.session_state['Config'])
