@@ -436,15 +436,12 @@ else:
         #Re-open Config
         Config = st.session_state['Config']
         if "Placement" in list(Config.keys()):
-            st.write(len(list(Config["Placement"].keys())))
             num_val = len(list(Config["Placement"].keys()))
         else:
             num_val = 0     
 
         
         # Create the number of levels
-        if "num_lev" in st.session_state:
-            num_val = st.session_state
         num_lev = st.number_input('Number of Folder Levels', value = num_val, min_value = 0, step = 1, key = 'num_lev')
     
         def create_cond_table(m,n):
