@@ -437,22 +437,17 @@ else:
         num_lev = st.number_input('Number of Folder Levels', value = None, min_value = 0, step = 1, key = 'num_lev')
     
         def create_cond_table(m,n):
-            grid_sec = st.columns([0.1, 0.2, 0.3, 0.4])
+            grid_sec = st.columns([0.05, 0.05, 0.2, 0.05, 0.2, 0.2, 0.25])
             with grid_sec[1]:
-                if n == 0:
-                    st.selectbox('Condition',['Always','Equals','Greater Than','Less Than'],key = f'folder_sec_a_{m}_{n}')
-                else:
-                    st.selectbox('Condition',['Always','Equals','Greater Than','Less Than'],key = f'folder_sec_a_{m}_{n}', label_visibility="collapsed")
+                st.text_input('If',value= 'IF', disabled = True, key = f'folder_sec_a_{m}_{n}', label_visibility="collapsed")
             with grid_sec[2]:
-                if n == 0:
-                    st.text_input('Value', value = None, key = f'folder_sec_b_{m}_{n}')
-                else:
-                    st.text_input('Value', value = None, key = f'folder_sec_b_{m}_{n}', label_visibility="collapsed")
+                st.selectbox('Conditional Attribute', st.session_state['single_json'], placeholder = "Leave empty if always true", key = f'folder_sec_b_{m}_{n}', label_visibility="collapsed")
             with grid_sec[3]:
-                if n == 0:
-                    st.text_input('Value', value = '[attribute]', key = f'folder_sec_c_{m}_{n}')
-                else:
-                    st.text_input('Value', value = '[attribute]', key = f'folder_sec_c_{m}_{n}', label_visibility="collapsed")
+                st.text_input('Eq',value= 'EQ ->', disabled = True, key = f'folder_sec_c_{m}_{n}', label_visibility="collapsed")
+            with grid_sec[4]:
+                st.selectbox('Conditional Attribute', st.session_state['single_json'], placeholder = "Select the naming attribute and foramt", key = f'folder_sec_d_{m}_{n}', label_visibility="collapsed")
+            with grid_sec[5]:
+                st.text_input('Eq',value= '[attribute]', , key = f'folder_sec_e_{m}_{n}', label_visibility="collapsed")
             
         def create_folder_table(m):
             grid_lev = st.columns([0.8,0.2])
