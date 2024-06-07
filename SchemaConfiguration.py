@@ -455,9 +455,11 @@ else:
             grid_lev = st.columns([0.8,0.2])
             with grid_lev[0]:
                 if m == 0:
-                    st.selectbox('Attribute', st.session_state['single_json'], key = f'folder_lev_a_{m}')
+                    st.text_input("Folder Level", value = "Level " + str(m+1), disabled = True, key = f'folder_lev_a_{m}')
+                    #st.selectbox('Attribute', st.session_state['single_json'], key = f'folder_lev_a_{m}')
                 else:
-                    st.selectbox('Attribute', st.session_state['single_json'], key = f'folder_lev_a_{m}', label_visibility = "collapsed")
+                    st.text_input("Folder Level", value = "Level " + str(m+1), disabled = True, key = f'folder_lev_a_{m}', label_visibility = "collapsed")
+                    #st.selectbox('Attribute', st.session_state['single_json'], key = f'folder_lev_a_{m}', label_visibility = "collapsed")
             with grid_lev[1]:
                 if m == 0:
                     st.number_input('Conditions', value = 1, min_value = 0, step = 1, key = f'folder_lev_b_{m}')
@@ -468,10 +470,6 @@ else:
             for n in range(st.session_state[f'folder_lev_b_{m}']): 
                 create_cond_table(m,n)
 
-                # if m == 0:
-                #     st.text_input('Format', value = '[value]', key = f'folder_lev_b_{m}')
-                # else:
-                #     st.text_input('Attribute', value = '[value]', key = f'folder_lev_b_{m}', label_visibility = "collapsed")
 
         if st.session_state['num_lev'] != None:
             for m in range(st.session_state['num_lev']):
