@@ -447,7 +447,8 @@ else:
                 for j in range(len(level_list)):
                     st.session_state['condition_list'] .append(len(Config["Placement"][level_list[j]]))
         else:
-            num_val = 0   
+            if num_lev not in st.session_state:
+                num_val = 0   
 
 
         
