@@ -446,6 +446,7 @@ else:
                 st.session_state['condition_list'] = []
                 for j in range(len(level_list)):
                     st.session_state['condition_list'] .append(len(Config["Placement"][level_list[j]]))
+                st.session_state['placement_flags'] = [1,1,1,1,1]
         else:
             if "num_lev" not in st.session_state:
                 num_val = 0   
@@ -463,7 +464,13 @@ else:
                 with grid_sec[0]:
                     st.text_input('If',value= 'IF', disabled = True, key = f'folder_sec_a_{m}_{n}', label_visibility="collapsed")
                 with grid_sec[1]:
-                    st.selectbox('Conditional Attribute', st.session_state['single_json'], index=st.session_state['single_json'].index(Config['Placement']['Level + str(m+1)'][0]), placeholder = "Select the conditional attribute", key = f'folder_sec_b_{m}_{n}', label_visibility="collapsed")
+                    # Determine if a value previously exists
+                    idx = None
+                    if 'placement_flags' in st.session_state:
+                        if st.session_state['placement_flags'][0] == 1:
+                            if 'Level ' + str(m+1) in list(Config['Placement'].keys()):
+                                idx = st.session_state['single_json'].index(Config['Placement']['Level ' + str(m+1)][0])
+                    st.selectbox('Conditional Attribute', st.session_state['single_json'], index=idx, placeholder = "Select the conditional attribute", key = f'folder_sec_b_{m}_{n}', label_visibility="collapsed")
                 with grid_sec[2]:
                     st.text_input('Eq',value= 'EQ :', disabled = True, key = f'folder_sec_c_{m}_{n}', label_visibility="collapsed")
                 with grid_sec[3]:
@@ -503,6 +510,11 @@ else:
                 create_folder_table(m)
             st.markdown('''---''')
 
+        # Turn off the flags
+        if 'placement_flags' in st.session_state:
+            st.session_state['placement_flags'] = [2,2,2,2,2]
+            
+        
         # Store the data in the Config
         if st.session_state['num_lev'] != None:
             Config = st.session_state['Config']
