@@ -440,8 +440,8 @@ else:
             st.session_state['json_flag'] = 3
             if "Placement" in list(Config.keys()):
                 num_val = len(list(Config["Placement"].keys()))
-            else:
-                num_val = 0     
+        else:
+            num_val = 0     
 
         
         # Create the number of levels
