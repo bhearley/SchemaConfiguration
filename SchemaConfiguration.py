@@ -568,6 +568,8 @@ else:
                         
                     Config['Placement']['Level ' + str(m+1)].append(new_vec)
 
+    st.write(Config['Placement'])
+
     # Create the config file
     json_string = json.dumps(st.session_state['Config'])
 
