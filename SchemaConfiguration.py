@@ -577,7 +577,7 @@ else:
         st.session_state['Config'] = Config
 
         
-        st.write(session_state['Config']['Placement'])
+        st.write(st.session_state['Config']['Placement'])
     
 
     # Create the config file
