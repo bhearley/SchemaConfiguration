@@ -471,7 +471,7 @@ else:
                                     idx = st.session_state['single_json'].index(Config['Placement']['Level ' + str(m+1)][n][1])
                     st.selectbox('Conditional Attribute', st.session_state['single_json'], index=idx, placeholder = "Select the conditional attribute", key = f'folder_sec_b_{m}_{n}', label_visibility="collapsed")
                 with grid_sec[2]:
-                    st.text_input('Eq',value= 'EQ :', disabled = True, key = f'folder_sec_c_{m}_{n}', label_visibility="collapsed")
+                    st.selectbox('Eq',['=','≠'], key = f'folder_sec_c_{m}_{n}', label_visibility="collapsed")
                 with grid_sec[3]:
                     # Determine if a value previously exists
                     idx = None
