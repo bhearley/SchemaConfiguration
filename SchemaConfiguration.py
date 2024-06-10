@@ -445,6 +445,8 @@ else:
                 for j in range(len(level_list)):
                     st.session_state['condition_list'] .append(len(Config["Placement"][level_list[j]]))
                 st.session_state['placement_flags'] = 1
+
+                st.write(st.session_state['Config']['Placement'])
         else:
             if "num_lev" not in st.session_state:
                 num_val = 0   
@@ -570,7 +572,7 @@ else:
 
         st.session_state['Config'] = Config
 
-    st.write(st.session_state['Config']['Placement'])
+    
 
     # Create the config file
     json_string = json.dumps(st.session_state['Config'])
