@@ -436,6 +436,8 @@ else:
         #Re-open Config
         Config = st.session_state['Config']
 
+        st.write(st.session_state['Config']['Placement'])
+
         if st.session_state['json_flag'] == 2:
             st.session_state['json_flag'] = 3
             if "Placement" in list(Config.keys()):
@@ -444,9 +446,7 @@ else:
                 st.session_state['condition_list'] = []
                 for j in range(len(level_list)):
                     st.session_state['condition_list'] .append(len(Config["Placement"][level_list[j]]))
-                st.session_state['placement_flags'] = 1
-
-                st.write(st.session_state['Config']['Placement'])
+                st.session_state['placement_flags'] = 1                
         else:
             if "num_lev" not in st.session_state:
                 num_val = 0   
