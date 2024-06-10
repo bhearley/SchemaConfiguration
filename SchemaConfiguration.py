@@ -467,14 +467,14 @@ else:
                     # Determine if a value previously exists
                     idx = None
                     if 'placement_flags' in st.session_state:
-                        if st.session_state['placement_flags'] == 1:
+                        if st.session_state['placement_flags'] > 0:
                             if 'Level ' + str(m+1) in list(Config['Placement'].keys()):
                                 idx = st.session_state['single_json'].index(Config['Placement']['Level ' + str(m+1)][n][1])
                     st.selectbox('Conditional Attribute', st.session_state['single_json'], index=idx, placeholder = "Select the conditional attribute", key = f'folder_sec_b_{m}_{n}', label_visibility="collapsed")
                 with grid_sec[2]:
                     idx = 0
                     if 'placement_flags' in st.session_state:
-                        if st.session_state['placement_flags'] == 1:
+                        if st.session_state['placement_flags'] > 0:
                             if 'Level ' + str(m+1) in list(Config['Placement'].keys()):
                                 if Config['Placement']['Level ' + str(m+1)][n][2] != '=':
                                     idx = 1        
@@ -483,7 +483,7 @@ else:
                     # Determine if a value previously exists
                     idx = None
                     if 'placement_flags' in st.session_state:
-                        if st.session_state['placement_flags'] == 1:
+                        if st.session_state['placement_flags'] > 0:
                             if 'Level ' + str(m+1) in list(Config['Placement'].keys()):
                                 idx = Config['Placement']['Level ' + str(m+1)][n][3]
                     st.text_input('Eq',value= idx, placeholder = 'Enter the conditional value', key = f'folder_sec_d_{m}_{n}', label_visibility="collapsed")
@@ -491,7 +491,7 @@ else:
                 # Determine if a value previously exists
                 idx = None
                 if 'placement_flags' in st.session_state:
-                    if st.session_state['placement_flags'] == 1:
+                    if st.session_state['placement_flags'] > 0:
                         if 'Level ' + str(m+1) in list(Config['Placement'].keys()):
                             idx = Config['Placement']['Level ' + str(m+1)][n][4]
                 st.multiselect('Conditional Attribute', st.session_state['single_json'], default= idx , placeholder = "Select the naming attribute and format", key = f'folder_sec_e_{m}_{n}', label_visibility="collapsed")
@@ -499,7 +499,7 @@ else:
                 # Determine if a value previously exists
                 idx = '[attribute]'
                 if 'placement_flags' in st.session_state:
-                    if st.session_state['placement_flags'] == 1:
+                    if st.session_state['placement_flags'] > 0:
                         if 'Level ' + str(m+1) in list(Config['Placement'].keys()):
                             idx = Config['Placement']['Level ' + str(m+1)][n][5]
                 st.text_input('Eq',value= idx, key = f'folder_sec_f_{m}_{n}', label_visibility="collapsed")
