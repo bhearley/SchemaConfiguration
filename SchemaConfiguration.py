@@ -467,7 +467,6 @@ else:
                     if 'placement_flags' in st.session_state:
                         if st.session_state['placement_flags'] > 0:
                             if 'Level ' + str(m+1) in list(Config['Placement'].keys()):
-                                st.write(n)
                                 if len(Config['Placement']['Level ' + str(m+1)]) > n:
                                     if Config['Placement']['Level ' + str(m+1)][n][1] != None:
                                         idx = st.session_state['single_json'].index(Config['Placement']['Level ' + str(m+1)][n][1])
@@ -477,8 +476,9 @@ else:
                     if 'placement_flags' in st.session_state:
                         if st.session_state['placement_flags'] > 0:
                             if 'Level ' + str(m+1) in list(Config['Placement'].keys()):
-                                if Config['Placement']['Level ' + str(m+1)][n][2] != '=':
-                                    idx = 1        
+                                if len(Config['Placement']['Level ' + str(m+1)]) > n:
+                                    if Config['Placement']['Level ' + str(m+1)][n][2] != '=':
+                                        idx = 1        
                     st.selectbox('Eq',['=','≠'], index = idx, key = f'folder_sec_c_{m}_{n}', label_visibility="collapsed")
                 with grid_sec[3]:
                     # Determine if a value previously exists
