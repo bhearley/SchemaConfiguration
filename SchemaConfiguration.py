@@ -436,8 +436,6 @@ else:
         #Re-open Config
         Config = st.session_state['Config']
 
-        st.write(st.session_state['Config']['Placement'])
-
         if st.session_state['json_flag'] == 2:
             st.session_state['json_flag'] = 3
             if "Placement" in list(Config.keys()):
@@ -575,10 +573,6 @@ else:
                     Config['Placement']['Level ' + str(m+1)].append(new_vec)
 
         st.session_state['Config'] = Config
-
-        
-        st.write(st.session_state['Config']['Placement'])
-    
 
     # Create the config file
     json_string = json.dumps(st.session_state['Config'])
