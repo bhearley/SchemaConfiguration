@@ -469,11 +469,16 @@ else:
                     if 'placement_flags' in st.session_state:
                         if st.session_state['placement_flags'] == 1:
                             if 'Level ' + str(m+1) in list(Config['Placement'].keys()):
-                                if Config['Placement']['Level ' + str(m+1)][n][1] in  st.session_state['single_json']:
-                                    idx = st.session_state['single_json'].index(Config['Placement']['Level ' + str(m+1)][n][1])
+                                idx = st.session_state['single_json'].index(Config['Placement']['Level ' + str(m+1)][n][1])
                     st.selectbox('Conditional Attribute', st.session_state['single_json'], index=idx, placeholder = "Select the conditional attribute", key = f'folder_sec_b_{m}_{n}', label_visibility="collapsed")
                 with grid_sec[2]:
-                    st.selectbox('Eq',['=','≠'], key = f'folder_sec_c_{m}_{n}', label_visibility="collapsed")
+                    idx = 0
+                    if 'placement_flags' in st.session_state:
+                        if st.session_state['placement_flags'] == 1:
+                            if 'Level ' + str(m+1) in list(Config['Placement'].keys()):
+                                if Config['Placement']['Level ' + str(m+1)][n][2] != '=':
+                                    idx = 1        
+                    st.selectbox('Eq',['=','≠'], index = idx, key = f'folder_sec_c_{m}_{n}', label_visibility="collapsed")
                 with grid_sec[3]:
                     # Determine if a value previously exists
                     idx = None
@@ -488,12 +493,8 @@ else:
                 if 'placement_flags' in st.session_state:
                     if st.session_state['placement_flags'] == 1:
                         if 'Level ' + str(m+1) in list(Config['Placement'].keys()):
-                            if Config['Placement']['Level ' + str(m+1)][n][4] in  st.session_state['single_json']:
-                                idx = st.session_state['single_json'].index(Config['Placement']['Level ' + str(m+1)][n][4])
-                st.write(st.session_state['placement_flags'])
-                st.write(st.session_state['single_json'])
-                st.write(idx)
-                st.multiselect('Conditional Attribute', st.session_state['single_json'], default= Config['Placement']['Level ' + str(m+1)][n][4] , placeholder = "Select the naming attribute and format", key = f'folder_sec_e_{m}_{n}', label_visibility="collapsed")
+                            idx = Config['Placement']['Level ' + str(m+1)][n][4]
+                st.multiselect('Conditional Attribute', st.session_state['single_json'], default= idx , placeholder = "Select the naming attribute and format", key = f'folder_sec_e_{m}_{n}', label_visibility="collapsed")
             with grid_sec[5]:
                 # Determine if a value previously exists
                 idx = '[attribute]'
@@ -501,7 +502,7 @@ else:
                     if st.session_state['placement_flags'] == 1:
                         if 'Level ' + str(m+1) in list(Config['Placement'].keys()):
                             idx = Config['Placement']['Level ' + str(m+1)][n][5]
-                st.text_input('Eq',value= '[attribute]', key = f'folder_sec_f_{m}_{n}', label_visibility="collapsed")
+                st.text_input('Eq',value= idx, key = f'folder_sec_f_{m}_{n}', label_visibility="collapsed")
             
         def create_folder_table(m):
             grid_lev = st.columns([0.8,0.2])
