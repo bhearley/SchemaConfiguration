@@ -575,7 +575,9 @@ else:
                     Config['Placement']['Level ' + str(m+1)].append(new_vec)
 
         st.session_state['Config'] = Config
-        st.write(session_state['Config'])
+
+        
+        st.write(session_state['Config']['Placement'])
     
 
     # Create the config file
