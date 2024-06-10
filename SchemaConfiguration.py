@@ -487,8 +487,8 @@ else:
                     if st.session_state['placement_flags'] == 1:
                         if 'Level ' + str(m+1) in list(Config['Placement'].keys()):
                             if Config['Placement']['Level ' + str(m+1)][n][4] in  st.session_state['single_json']:
-                                idx = st.session_state['single_json'].index(Config['Placement']['Level ' + str(m+1)][n][4])
-                st.multiselect('Conditional Attribute', st.session_state['single_json'], index= idx, placeholder = "Select the naming attribute and format", key = f'folder_sec_e_{m}_{n}', label_visibility="collapsed")
+                                idx = [st.session_state['single_json'].index(Config['Placement']['Level ' + str(m+1)][n][4])]
+                st.multiselect('Conditional Attribute', st.session_state['single_json'], default= idx, placeholder = "Select the naming attribute and format", key = f'folder_sec_e_{m}_{n}', label_visibility="collapsed")
             with grid_sec[5]:
                 # Determine if a value previously exists
                 idx = '[attribute]'
