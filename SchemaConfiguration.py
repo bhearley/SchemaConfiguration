@@ -598,13 +598,3 @@ else:
         mime="application/json",
         data=json_string,
     )
-
-            
-
-
-
-
-
-  
-
-
