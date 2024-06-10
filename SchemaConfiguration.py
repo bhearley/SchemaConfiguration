@@ -170,13 +170,15 @@ else:
 
 
     # Load the Raw and Analysis Template File
-    f = open(raw_template)
-    Raw = json.load(f)
-    st.session_state['Raw'] = Raw
+    if 'Raw' not in st.session_state:
+        f = open(raw_template)
+        Raw = json.load(f)
+        st.session_state['Raw'] = Raw
 
-    f = open(analysis_template)
-    Analysis = json.load(f)
-    st.session_state['Analysis'] = Analysis
+    if 'Analysis' not in st.session_state:
+        f = open(analysis_template)
+        Analysis = json.load(f)
+        st.session_state['Analysis'] = Analysis
 
     # Load Atts
     Atts = st.session_state['Atts']
@@ -223,25 +225,28 @@ else:
         Config = st.session_state['Config']
 
          # Get List of all JSON Attributes
-        JSON_atts = ['']
-        # -- Raw Data
-        Raw_cat = list(Raw.keys())
-        for j in range(len(Raw_cat)):
-            Raw_att = list(Raw[Raw_cat[j]].keys())
-            for k in range(len(Raw_att)):
-                if Raw[Raw_cat[j]][Raw_att[k]]['Type'] == 'point'or Raw[Raw_cat[j]][Raw_att[k]]['Type'] == 'string':
-                    att_name = Raw_cat[j] + ' - ' + Raw_att[k]
-                    JSON_atts.append(att_name)
-
-        # -- Analysis Data
-        Analysis_cat = list(Analysis.keys())
-        for j in range(len(Analysis_cat)):
-            Analysis_att = list(Analysis[Analysis_cat[j]].keys())
-            for k in range(len(Analysis_att)):
-                if Analysis[Analysis_cat[j]][Analysis_att[k]]['Type'] == 'point'or Analysis[Analysis_cat[j]][Analysis_att[k]]['Type'] == 'string':
-                    att_name = Analysis_cat[j] + ' - ' + Analysis_att[k]
-                    JSON_atts.append(att_name)
-
+        if 'single_json' not in st.session_state:
+            JSON_atts = ['']
+            # -- Raw Data
+            Raw_cat = list(Raw.keys())
+            for j in range(len(Raw_cat)):
+                Raw_att = list(Raw[Raw_cat[j]].keys())
+                for k in range(len(Raw_att)):
+                    if Raw[Raw_cat[j]][Raw_att[k]]['Type'] == 'point'or Raw[Raw_cat[j]][Raw_att[k]]['Type'] == 'string':
+                        att_name = Raw_cat[j] + ' - ' + Raw_att[k]
+                        JSON_atts.append(att_name)
+    
+            # -- Analysis Data
+            Analysis_cat = list(Analysis.keys())
+            for j in range(len(Analysis_cat)):
+                Analysis_att = list(Analysis[Analysis_cat[j]].keys())
+                for k in range(len(Analysis_att)):
+                    if Analysis[Analysis_cat[j]][Analysis_att[k]]['Type'] == 'point'or Analysis[Analysis_cat[j]][Analysis_att[k]]['Type'] == 'string':
+                        att_name = Analysis_cat[j] + ' - ' + Analysis_att[k]
+                        JSON_atts.append(att_name)
+            st.session_state['single_json'] = JSON_atts
+        JSON_atts = st.session_state['single_json'] 
+        
         # Create the table
         single_grid = st.empty()
         grid = single_grid.columns(2)
@@ -264,33 +269,32 @@ else:
             Config['Single Value'][atts[i]] = st.session_state[f'single_val_b_{i}']
         st.session_state['Config'] = Config
 
-        # Save Single JSON atts
-        st.session_state['single_json'] = JSON_atts
-
     with st.expander('Functional Attributes'):
         # Get List of Schema Attributes
         atts = list(Atts['Functional'].keys())
 
         # Get List of all JSON Attributes
-        JSON_atts = ['']
-        # -- Raw Data
-        Raw_cat = list(Raw.keys())
-        for j in range(len(Raw_cat)):
-            Raw_att = list(Raw[Raw_cat[j]].keys())
-            for k in range(len(Raw_att)):
-                if Raw[Raw_cat[j]][Raw_att[k]]['Type'] == 'point array':
-                    att_name = Raw_cat[j] + ' - ' + Raw_att[k]
-                    JSON_atts.append(att_name)
-
-         # -- Analysis Data
-        Analysis_cat = list(Analysis.keys())
-        for j in range(len(Analysis_cat)):
-            Analysis_att = list(Analysis[Analysis_cat[j]].keys())
-            for k in range(len(Analysis_att)):
-                if Analysis[Analysis_cat[j]][Analysis_att[k]]['Type'] == 'point array':
-                    att_name = Analysis_cat[j] + ' - ' + Analysis_att[k]
-                    JSON_atts.append(att_name)
-
+        if 'func_json' not in st.session_state:
+            JSON_atts = ['']
+            # -- Raw Data
+            Raw_cat = list(Raw.keys())
+            for j in range(len(Raw_cat)):
+                Raw_att = list(Raw[Raw_cat[j]].keys())
+                for k in range(len(Raw_att)):
+                    if Raw[Raw_cat[j]][Raw_att[k]]['Type'] == 'point array':
+                        att_name = Raw_cat[j] + ' - ' + Raw_att[k]
+                        JSON_atts.append(att_name)
+    
+             # -- Analysis Data
+            Analysis_cat = list(Analysis.keys())
+            for j in range(len(Analysis_cat)):
+                Analysis_att = list(Analysis[Analysis_cat[j]].keys())
+                for k in range(len(Analysis_att)):
+                    if Analysis[Analysis_cat[j]][Analysis_att[k]]['Type'] == 'point array':
+                        att_name = Analysis_cat[j] + ' - ' + Analysis_att[k]
+                        JSON_atts.append(att_name)
+            st.session_state['func_json'] = JSON_atts
+        JSON_atts = st.session_state['func_json']
 
         # Create the table
         single_grid = st.empty()
@@ -326,24 +330,27 @@ else:
     else:
         st.session_state['tab_exp'] = True
 
-    JSON_atts = ['']
-    # -- Raw Data
-    Raw_cat = list(Raw.keys())
-    for j in range(len(Raw_cat)):
-        Raw_att = list(Raw[Raw_cat[j]].keys())
-        for k in range(len(Raw_att)):
-            if Raw[Raw_cat[j]][Raw_att[k]]['Type'] != 'dict':
-                att_name = Raw_cat[j] + ' - ' + Raw_att[k]
-                JSON_atts.append(att_name)
-
-    # -- Analysis Data
-    Analysis_cat = list(Analysis.keys())
-    for j in range(len(Analysis_cat)):
-        Analysis_att = list(Analysis[Analysis_cat[j]].keys())
-        for k in range(len(Analysis_att)):
-            if Analysis[Analysis_cat[j]][Analysis_att[k]]['Type'] != 'dict':
-                att_name = Analysis_cat[j] + ' - ' + Analysis_att[k]
-                JSON_atts.append(att_name)
+    if 'tab_json' not in st.session_state:
+        JSON_atts = ['']
+        # -- Raw Data
+        Raw_cat = list(Raw.keys())
+        for j in range(len(Raw_cat)):
+            Raw_att = list(Raw[Raw_cat[j]].keys())
+            for k in range(len(Raw_att)):
+                if Raw[Raw_cat[j]][Raw_att[k]]['Type'] != 'dict':
+                    att_name = Raw_cat[j] + ' - ' + Raw_att[k]
+                    JSON_atts.append(att_name)
+    
+        # -- Analysis Data
+        Analysis_cat = list(Analysis.keys())
+        for j in range(len(Analysis_cat)):
+            Analysis_att = list(Analysis[Analysis_cat[j]].keys())
+            for k in range(len(Analysis_att)):
+                if Analysis[Analysis_cat[j]][Analysis_att[k]]['Type'] != 'dict':
+                    att_name = Analysis_cat[j] + ' - ' + Analysis_att[k]
+                    JSON_atts.append(att_name)
+        st.session_state['tab_json'] = JSON_atts
+    JSON_atts = st.session_state['tab_json']
 
     def update_tab():
         with st.expander('Tabular Attributes', expanded = st.session_state['tab_exp']):
