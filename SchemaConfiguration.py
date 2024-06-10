@@ -486,7 +486,8 @@ else:
                     if 'placement_flags' in st.session_state:
                         if st.session_state['placement_flags'] > 0:
                             if 'Level ' + str(m+1) in list(Config['Placement'].keys()):
-                                idx = Config['Placement']['Level ' + str(m+1)][n][3]
+                                if len(Config['Placement']['Level ' + str(m+1)]) > n:
+                                    idx = Config['Placement']['Level ' + str(m+1)][n][3]
                     st.text_input('Eq',value= idx, placeholder = 'Enter the conditional value', key = f'folder_sec_d_{m}_{n}', label_visibility="collapsed")
             with grid_sec[4]:
                 # Determine if a value previously exists
@@ -494,7 +495,8 @@ else:
                 if 'placement_flags' in st.session_state:
                     if st.session_state['placement_flags'] > 0:
                         if 'Level ' + str(m+1) in list(Config['Placement'].keys()):
-                            idx = Config['Placement']['Level ' + str(m+1)][n][4]
+                            if len(Config['Placement']['Level ' + str(m+1)]) > n:
+                                idx = Config['Placement']['Level ' + str(m+1)][n][4]
                 st.multiselect('Conditional Attribute', st.session_state['single_json'], default= idx , placeholder = "Select the naming attribute and format", key = f'folder_sec_e_{m}_{n}', label_visibility="collapsed")
             with grid_sec[5]:
                 # Determine if a value previously exists
@@ -502,7 +504,8 @@ else:
                 if 'placement_flags' in st.session_state:
                     if st.session_state['placement_flags'] > 0:
                         if 'Level ' + str(m+1) in list(Config['Placement'].keys()):
-                            idx = Config['Placement']['Level ' + str(m+1)][n][5]
+                            if len(Config['Placement']['Level ' + str(m+1)]) > n:
+                                idx = Config['Placement']['Level ' + str(m+1)][n][5]
                 st.text_input('Eq',value= idx, key = f'folder_sec_f_{m}_{n}', label_visibility="collapsed")
             
         def create_folder_table(m):
