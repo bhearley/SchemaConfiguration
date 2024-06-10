@@ -468,8 +468,9 @@ else:
                         if st.session_state['placement_flags'] > 0:
                             if 'Level ' + str(m+1) in list(Config['Placement'].keys()):
                                 st.write(n)
-                                if Config['Placement']['Level ' + str(m+1)][n][1] != None:
-                                    idx = st.session_state['single_json'].index(Config['Placement']['Level ' + str(m+1)][n][1])
+                                if len(Config['Placement']['Level ' + str(m+1)][n]) >= n:
+                                    if Config['Placement']['Level ' + str(m+1)][n][1] != None:
+                                        idx = st.session_state['single_json'].index(Config['Placement']['Level ' + str(m+1)][n][1])
                     st.selectbox('Conditional Attribute', st.session_state['single_json'], index=idx, placeholder = "Select the conditional attribute", key = f'folder_sec_b_{m}_{n}', label_visibility="collapsed")
                 with grid_sec[2]:
                     idx = 0
