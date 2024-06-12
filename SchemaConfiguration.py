@@ -36,7 +36,7 @@ st.markdown('Enter some general instructions...')
 
 # Create Button to Download Manual
 data_path =  "/mount/src/labinfrastructure/"
-doc_download = docx.Document("/mount/src/schemaconfiguration/Py MI Lab Schema Configuration Manager User Manual.docx"))
+doc_download = docx.Document("/mount/src/schemaconfiguration/Py MI Lab Schema Configuration Manager User Manual.docx")
 bio = io.BytesIO()
 doc_download.save(bio)
 st.download_button(
