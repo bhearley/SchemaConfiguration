@@ -15,6 +15,7 @@ import time
 import json
 import streamlit as st
 from openpyxl import load_workbook
+import io
 import docx
 
 # Set Template Directories
