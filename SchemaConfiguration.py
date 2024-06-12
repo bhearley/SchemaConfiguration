@@ -15,6 +15,7 @@ import time
 import json
 import streamlit as st
 from openpyxl import load_workbook
+import docx
 
 # Set Template Directories
 raw_template = "/mount/src/schemaconfiguration/Raw_Template.json"
@@ -29,6 +30,22 @@ st.set_page_config(layout="wide")
 
 # Create the Title
 st.title("PyMILab Schema Configuration Manager")
+
+# Write Instructions
+st.markdown('Enter some general instructions...')
+
+# Create Button to Download Manual
+data_path =  "/mount/src/labinfrastructure/"
+doc_download = docx.Document("/mount/src/schemaconfiguration/Py MI Lab Schema Configuration Manager User Manual.docx"))
+bio = io.BytesIO()
+doc_download.save(bio)
+st.download_button(
+            label="Download the User's Manual",
+            data=bio.getvalue(),
+            file_name="Py MILab Configuration Manual.docx",
+            mime="docx"
+        )
+st.markdown("""---""")
 
 #==================================================================================================================================================================
 # SCHEMA SELECTION
